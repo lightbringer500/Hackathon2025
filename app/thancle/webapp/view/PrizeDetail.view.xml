@@ -1,0 +1,41 @@
+<mvc:View
+    xmlns:p13n="sap.m.p13n"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.PrizeDetail">
+    <Page
+        id="prizeDetailPage"
+        title="{i18n>prizeDetailTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <Panel id="prizeDetailPointPanel" width="auto" class="sapUiResponsiveMargin">
+            <content>
+                <ObjectNumber
+                    id="prizeDetailPoints"
+                    class="sapMObjectNumberLarge"
+                    active="false"
+                    number="{user>points}"
+                    unit="{i18n>pointUnit}"
+                    emphasized="true"
+                    textAlign="Center"
+                    state="None"/>
+            </content>
+        </Panel>
+        <layout:VerticalLayout
+            id="prizeDetailLayout"
+            class="sapUiContentPadding"
+            width="100%">
+            <Title id="prizeDetailNeedTitle" text="必要さんくる：{prize>necessaryPoints} {i18n>pointUnit}"></Title>
+            <Title id="prizeDetailPointsTitle" text="保有さんくる：{user>points} {i18n>pointUnit}"></Title>
+
+            <Text id="nameText" text="{prize>name}" />
+            <Text id="informationText" text="{prize>information}" />
+            <Text id="pointsText" text="{prize>necessaryPoints}" />
+        </layout:VerticalLayout>
+    </Page>
+
+</mvc:View>

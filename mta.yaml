@@ -1,0 +1,155 @@
+_schema-version: 3.3.0
+ID: thancle
+description: A simple CAP project.
+version: 1.0.0
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        - mkdir -p resources
+modules:
+  - name: thancle-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: thancle-postgres
+      - name: thancle-auth
+      - name: thancle-destination-service
+    provides:
+      - name: thancle-srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-http-endpoint: /health
+      readiness-health-check-type: http
+    build-parameters:
+      builder: npm
+
+  - name: thancle-postgres-deployer
+    type: nodejs
+    path: gen/pg
+    requires:
+      - name: thancle-postgres
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      tasks:
+        - command: npm start
+          name: deploy-to-postgresql
+
+  - name: zynasthancle
+    type: html5
+    path: app/thancle
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+        - npm ci
+        - npm run build
+      supported-platforms: []
+
+  - name: thancle-app-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: thancle-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources/
+      requires:
+        - name: zynasthancle
+          artifacts:
+            - zynasthancle.zip
+          target-path: resources/
+
+  - name: thancle-destinations
+    type: com.sap.application.content
+    requires:
+      - name: thancle-auth
+        parameters:
+          service-key:
+            name: thancle-auth-key
+      - name: thancle-html5-repo-host
+        parameters:
+          service-key:
+            name: thancle-html5-repo-host-key
+      - name: thancle-srv-api
+      - name: thancle-destination-service
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: thancle-html5-repo-host
+              ServiceInstanceName: thancle-html5-repo-host
+              ServiceKeyName: thancle-html5-repo-host-key
+              sap.cloud.service: thancle.service
+            - Name: thancle-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: thancle-auth
+              ServiceKeyName: thancle-auth-key
+              sap.cloud.service: thancle.service
+resources:
+  - name: thancle-postgres
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: postgresql-db
+      service-plan: free
+  - name: thancle-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: thancle-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Name: thancle-srv-api
+                URL: ~{thancle-srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+    requires:
+      - name: thancle-srv-api
+        group: destinations
+        properties:
+          name: thancle-srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+  - name: thancle-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: thancle-${org}-${space}
+        tenant-mode: dedicated

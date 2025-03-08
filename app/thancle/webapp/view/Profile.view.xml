@@ -1,0 +1,59 @@
+<mvc:View
+    xmlns:p13n="sap.m.p13n"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.Profile">
+    <Page
+        id="profilePage"
+        title="{i18n>profileTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content">
+        <headerContent>
+            <Button
+                id="profileHeaderButton"
+                icon="sap-icon://business-by-design"
+                tooltip="{i18n>admin}"
+                visible="false"/>
+        </headerContent>
+        <content>
+            <ObjectHeader id="profileHeader" title="{user>name}">
+                <attributes>
+                    <ObjectAttribute id="profileEmailAddress" text="{user>email}"/>
+                </attributes>
+            </ObjectHeader>
+
+            <Panel id="profilePoint"
+                width="auto"
+                class="sapUiResponsiveMargin"
+                headerText="{i18n>profilePointTitle}">
+                <content>
+                    <ObjectNumber
+                        id="profilePoints"
+                        class="sapMObjectNumberLarge"
+                        active="false"
+                        number="{user>points}"
+                        unit="{i18n>pointUnit}"
+                        emphasized="true"
+                        textAlign="Center"
+                        state="None"/>
+                </content>
+            </Panel>
+
+            <Panel id="profileButtonPanel" width="auto" class="sapUiResponsiveMargin">
+                <Button 
+                    id="thanksButton"
+                    text="{i18n>profileThanksButtonText}"
+                    width="100%"
+                    type="Emphasized"
+                    press=".onPressThanksButton"/>
+                <Button id="prizeButton" text="{i18n>profilePrizeButtonText}" width="50%" press=".onOpenPrizes"/>
+                <Button id="historyButton" text="{i18n>profileHistoryButtonText}" width="50%"/>
+                <Button id="employeesButton" text="{i18n>profileEmployeesButtonText}" width="100%" press=".onEmployeesButton"></Button>
+
+
+
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,51 @@
+# 以降のリクエストで利用するURL
+@baseUrl = http://localhost:4004/seed
+@queryUrl = http://localhost:4004/query
+@employeeUrl = http://localhost:4004/employee
+
+# 未認証
+### ------------------------------------------------------------------------
+# サービスのメタデータドキュメントを取得する
+GET {{baseUrl}}/$metadata
+### ------------------------------------------------------------------------
+# ユーザー情報を取得する
+POST {{baseUrl}}/present
+
+
+# 認証済み
+### ------------------------------------------------------------------------
+# サービスのメタデータドキュメントを取得する
+GET {{baseUrl}}/$metadata
+Authorization: Basic test1@example.com:abc
+
+### ------------------------------------------------------------------------
+# 社員
+GET {{employeeUrl}}/Employees?$expand=point,seed
+Authorization: Basic test1@example.com:abc
+
+### ------------------------------------------------------------------------
+# タネ履歴
+GET {{queryUrl}}/SeedHistories
+Authorization: Basic test1@example.com:abc
+
+### ------------------------------------------------------------------------
+# ポイント履歴
+GET {{queryUrl}}/PointHistories
+Authorization: Basic test1@example.com:abc
+
+### ------------------------------------------------------------------------
+# タネ-ポイント対応表
+GET {{queryUrl}}/SeedPointMapping
+Authorization: Basic test1@example.com:abc
+
+### ------------------------------------------------------------------------
+# さんくるを贈る
+POST {{baseUrl}}/present
+Content-Type: application/json
+Authorization: Basic test1@example.com:abc
+
+{
+    "recipientId": "111111",
+    "rateId": "8bf81778-ea27-a402-6498-a9b5d50dcd2f",
+    "message": "ありがとう"
+}

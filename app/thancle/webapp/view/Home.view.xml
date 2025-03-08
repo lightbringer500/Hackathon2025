@@ -1,0 +1,60 @@
+<mvc:View
+    xmlns:p13n="sap.m.p13n"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.Home">
+    <Page
+        id="homePage"
+        title="{i18n>Title}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content">
+        <headerContent>
+            <Button
+                id="homeHeaderButton"
+                icon="sap-icon://business-by-design"
+                tooltip="{i18n>admin}"
+                visible="false"/>
+        </headerContent>
+        <content>
+            <ObjectHeader id="homeHeader" title="{user>name}">
+                <attributes>
+                    <ObjectAttribute id="homeEmailAddress" text="{user>email}"/>
+                </attributes>
+            </ObjectHeader>
+
+            <Panel id="homePoint"
+                width="auto"
+                class="sapUiResponsiveMargin"
+                headerText="{i18n>PointTitle}">
+                <content>
+                    <Text id="todayText" width="100%" textAlign="Center" />
+                </content>
+            </Panel>
+
+            <Panel id="homeButtonPanel" width="auto" class="sapUiResponsiveMargin">
+                <!-- 単価・保存ボタン -->
+                <Panel id="unitPanel">
+                    <Input id="oneDay" width="5%"></Input><Label id="oneDayLabel" text="{i18n>oneDayLabel}"></Label>
+                    <Input id="monthDays" width="5%"></Input><Label id="monthDaysLabel" text="{i18n>monthDaysLabel}"></Label>
+                    <Button id="templateButton" class="templateButton" text="{i18n>TemplateButton}" width="auto" press=""></Button>
+                </Panel>
+                
+                <!-- タスクリスト -->
+                <Panel id="taskPanel">
+                    <Input id="taskLabel1" class="taskLabel" placeholder="タスク1" width="60%" />
+                    <Input id="taskLabel2" class="taskLabel" placeholder="タスク2" width="60%" />
+                    <Input id="taskLabel3" class="taskLabel" placeholder="タスク3" width="60%" />
+                    <Button id="taskAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="60%" press=""></Button>
+                </Panel>
+
+                <!-- スタートボタン -->
+                <Panel id="startPanel">
+                    <Button id="startButton" class="startButton" text="{i18n>StartButton}" width="20%" press=".onStartTask"/>
+                </Panel>
+
+
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,183 @@
+<mvc:View 
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.Thanks">
+    <Page
+        id="thanksPage"
+        title="{i18n>thanksTitle}"
+        showNavButton="true"
+        navButtonPress=".onPressNav"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content" >
+        <content>
+            <!-- さんくるのタネ -->
+            <Panel
+                id="thanksSeedPanel"
+                width="auto"
+                class="sapUiResponsiveMargin"
+                headerText="{i18n>thanksSeedTitle}">
+                <content>
+                    <ObjectNumber
+                        id="thanksSeeds"
+                        class="sapMObjectNumberLarge"
+                        active="false"
+                        number="{user>seeds}"
+                        unit="{i18n>seedUnit}"
+                        emphasized="true"
+                        textAlign="Center"
+                        state="None" />
+                </content>
+            </Panel>
+
+            <f:Form 
+                id="thanksForm"
+                editable="true">
+                <!-- フォームタイトル -->
+                <f:title>
+                    <core:Title 
+                        id="thancleFormTitle"
+                        text="{i18n>thanksFormTitle}">
+                    </core:Title>
+                </f:title>
+
+                <!-- レイアウト設定 -->
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        id="thanksFormLayout"
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4"
+                        emptySpanL="4"
+                        emptySpanM="4"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false" />
+                </f:layout>
+
+                <!-- 内容 -->
+                <f:formContainers>
+                    <f:FormContainer id="thanksFormContainer">
+                        <f:formElements>
+                            <!-- 贈る相手 -->
+                            <f:FormElement 
+                                id="thanksFormTo">
+                                <f:label>
+                                    <Label
+                                        id="thanksFormToLabel"
+                                        labelFor="thanksFormToCombo"
+                                        text="{i18n>thanksFormToLabel}"
+                                        required="true"/>
+                                </f:label>
+                                <f:fields>
+                                    <ComboBox
+                                        id="thanksFormToCombo"
+                                        showSecondaryValues="true"
+                                        showClearIcon="true"
+                                        change=".validateEmployee"
+                                        selectionChange=".validateEmployee"
+                                        valueStateText="{i18n>inputRequired}"
+                                        items="{
+                                            path: '/Employees',
+                                            model: 'employee',
+                                            parameters: {
+                                                $orderby: 'ID asc'
+                                            }
+                                        }">
+                                        <core:ListItem
+                                            id="thanksFormToItem"
+                                            key="{employee>ID}"
+                                            text="{employee>name}"
+                                            additionalText="{employee>email}">
+                                            <core:customData>
+                                                <core:CustomData key="ID" value="{employee>ID}"/>
+                                            </core:customData>
+                                        </core:ListItem>
+                                    </ComboBox>
+                                </f:fields>
+                            </f:FormElement>
+
+                            <!-- さんくるの大きさ -->
+                            <f:FormElement 
+                                id="thanksFormRate">
+                                <f:label>
+                                    <Label
+                                        id="thanksFormRateLabel"
+                                        labelFor="thanksFormRateSelect"
+                                        text="{i18n>thanksFormRateLabel}"
+                                        required="true"/>
+                                </f:label>
+                                <f:fields>
+                                    <Select
+                                        id="thanksFormRateSelect"
+                                        showSecondaryValues= "true"
+                                        columnRatio="3:2"
+                                        forceSelection="false"
+                                        resetOnMissingKey="true"
+                                        change=".validateSeedRate"
+                                        valueStateText="{i18n>selectRequired}"
+                                        items="{
+                                            path: 'seed>/Rates',
+                                            sorter: {
+                                                path: 'quantity'
+                                            }
+                                        }">
+                                        <core:ListItem 
+                                            id="thanksFormRateSelectItem"
+                                            key="{seed>quantity}"
+                                            text="{seed>name}"
+                                            additionalText="{seed>quantity}">
+                                            <core:customData>
+                                                <core:CustomData key="ID" value="{seed>ID}"/>
+                                            </core:customData>
+                                        </core:ListItem>
+                                    </Select>
+                                </f:fields>
+                            </f:FormElement>
+
+                            <!-- さんくるメッセージ -->
+                            <f:FormElement 
+                                id="thanksFormMessage">
+                                <f:label>
+                                    <Label
+                                        id="thanksFormMessageLabel"
+                                        labelFor="thanksFormMessageText"
+                                        text="{i18n>thanksFormMessageLabel}"/>
+                                </f:label>
+                                <f:fields>
+                                    <TextArea
+                                        id="thanksFormMessageText"
+                                        maxLength="400"
+                                        growing="true">
+                                    </TextArea>
+                                </f:fields>
+                            </f:FormElement>
+
+                        </f:formElements>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
+
+            <!-- 贈るボタン -->
+			<FlexBox
+                id="thanksPresentBox"
+                height="100px"
+				alignItems="Center"
+				justifyContent="Center" >
+                <Button 
+                    id="thanksPresentButton"
+                    type="Emphasized"
+                    press=".onPressPresent"
+                    text="{i18n>thanksPresentButtonText}" >
+                </Button>
+			</FlexBox>
+        </content>
+    </Page>
+</mvc:View>

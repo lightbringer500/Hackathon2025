@@ -1,0 +1,239 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "zynas.thancle",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:fpm",
+      "version": "1.15.6",
+      "toolsId": "2f0f98fe-62f2-4cdb-90cb-68f47d822ef2"
+    },
+    "dataSources": {
+      "userService": {
+        "uri": "user/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "prizeService": {
+        "uri": "prize/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "seedService": {
+        "uri": "seed/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      },
+      "employeeService": {
+        "uri": "employee/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "thancle-display": {
+          "semanticObject": "thancle",
+          "action": "display",
+          "title": "{{flpTitle}}",
+          "subTitle": "{{flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.130.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "rootView": {
+      "viewName": "zynas.thancle.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "zynas.thancle.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
+        }
+      },
+      "user": {
+        "dataSource": "userService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "prize": {
+        "dataSource": "prizeService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "seed": {
+        "dataSource": "seedService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "employee": {
+        "dataSource": "employeeService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "zynas.thancle.view",
+        "controlId": "app",
+        "controlAggregation": "pages"
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "home",
+          "target": "home"
+        },
+        {
+          "pattern": "profile",
+          "name": "profile",
+          "target": "profile"
+        },
+        {
+          "pattern": "prizes",
+          "name": "prizes",
+          "target": "prizes"
+        },
+        {
+          "pattern": "prizes/{prizeId}",
+          "name": "prizeDetail",
+          "target": "prizeDetail"
+        },
+        {
+          "pattern": "thanks",
+          "name": "thanks",
+          "target": "thanks"
+        },
+        {
+          "pattern": "employees",
+          "name": "employees",
+          "target": "employees"
+        },
+        {
+          "pattern": "employees/{employeesId}",
+          "name": "employeesDetail",
+          "target": "employeesDetail"
+        }
+      ],
+      "targets": {
+        "home": {
+          "id": "home",
+          "name": "Home"
+        },
+        "profile": {
+          "id": "profile",
+          "name": "Profile"
+        },
+        "prizes": {
+          "id": "prizes",
+          "name": "Prizes"
+        },
+        "prizeDetail": {
+          "id": "prizeDetail",
+          "name": "PrizeDetail"
+        },
+        "thanks": {
+          "id": "thanks",
+          "name": "Thanks"
+        },
+        "employees": {
+          "id": "employees",
+          "name": "Employees"
+        },
+        "employeesDetail": {
+          "id": "employeesDetail",
+          "name": "EmployeesDetail"
+        }
+      }
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "thancle.service"
+  }
+}

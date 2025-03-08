@@ -1,0 +1,74 @@
+{
+  "name": "thancle",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/postgres": "^1.10.4",
+    "@sap/cds": "^8",
+    "@sap/xssec": "^4",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.7.0",
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-thancle": "cds watch --open thancle/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy thancle --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && cds compile srv --to xsuaa > xs-security.json && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "sapux": [
+    "app/thancle"
+  ],
+  "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "test1@example.com": {
+              "roles": [
+                "admin",
+                "user"
+              ],
+              "password": "abc"
+            },
+            "test2@example.com": {
+              "roles": [
+                "user"
+              ],
+              "password": "abc"
+            },
+            "test3@example.com": {
+              "roles": [ ],
+              "password": "abc"
+            },
+            "not-exist-user@example.com": {
+              "roles": [
+                "user"
+              ],
+              "password": "abc"
+            },
+            "has-no-user-role@example.com": {
+              "roles": [],
+              "password": "abc"
+            }
+          }
+        }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "destinations": true,
+      "html5-repo": true,
+      "workzone": true
+    }
+  }
+}

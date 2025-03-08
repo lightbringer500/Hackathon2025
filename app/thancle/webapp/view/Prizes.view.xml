@@ -1,0 +1,54 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.Prizes">
+    <Page id="prizesPage"
+        title="{i18n>prizesTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        <!-- <headerContent>
+            <Toolbar id="prizeToolbar">
+				<SearchField id="prizeSearch" width="100%"/>
+				<Text text="Default Search" id="idSearchListToolbar"/>
+			</Toolbar>
+        </headerContent> -->
+        <Panel id="prizePointPanel" width="auto" class="sapUiResponsiveMargin">
+            <content>
+                <ObjectNumber
+                    id="prizePoints"
+                    class="sapMObjectNumberLarge"
+                    active="false"
+                    number="{user>points}"
+                    unit="{i18n>pointUnit}"
+                    emphasized="true"
+                    textAlign="Center"
+                    state="None"/>
+            </content>
+        </Panel>
+        <List id="prizeList"
+            items="{
+                path: '/Prizes',
+                model: 'prize',
+                parameters: {
+                    $filter: '(display eq \'true\') and (startDate le date(now()) or startDate eq null) and (endDate ge date(now()) or endDate eq null)',
+                    $orderby: 'necessaryPoints asc, name asc'
+                }
+            }"
+            growing="true">
+            <StandardListItem
+                type="Navigation"
+                id="prizeItem"
+                title="{prize>name}"
+                description="{prize>information}"
+                info="{prize>necessaryPoints} {i18n>pointUnit}"
+                icon="{prize>image}"
+                iconDensityAware="false"
+                iconInset="false"
+                adaptTitleSize="false"
+                press=".onOpenPrizeDetail">
+            </StandardListItem>
+        </List>
+    </Page>
+</mvc:View>

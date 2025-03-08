@@ -1,0 +1,51 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.Employees">
+    <Page id="employeesPage"
+        title="{i18n>employeesTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        <!-- <headerContent>
+            <Toolbar id="prizeToolbar">
+				<SearchField id="prizeSearch" width="100%"/>
+				<Text text="Default Search" id="idSearchListToolbar"/>
+			</Toolbar>
+        </headerContent> -->
+        <Panel id="employeesPanel" width="auto" class="sapUiResponsiveMargin">
+            <content>
+                <ObjectNumber
+                    id="Employees"
+                    class="sapMObjectNumberLarge"
+                    active="false"
+                    unit="{i18n>employeesTitle}"
+                    emphasized="true"
+                    textAlign="Center"
+                    state="None"/>
+            </content>
+        </Panel>
+        <List id="employeesList"
+            items="{
+                path: '/Employees',
+                model: 'employee',
+                parameters: {
+                    $orderby: 'ID asc'
+                }
+            }"
+            growing="true">
+            <StandardListItem
+                type="Navigation"
+                id="employeesItem"
+                title="{employee>name}"
+                description="{employee>ID}"
+                info="{employee>email}"
+                iconDensityAware="false"
+                iconInset="false"
+                adaptTitleSize="false"
+                press=".onOpenEmployeesDetail">
+            </StandardListItem>
+        </List>
+    </Page>
+</mvc:View>

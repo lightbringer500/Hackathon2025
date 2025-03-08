@@ -1,0 +1,40 @@
+<mvc:View
+    xmlns:p13n="sap.m.p13n"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.EmployeesDetail">
+    <Page
+        id="employeesDetailPage"
+        title="{i18n>employeesDetailTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <Panel id="employeesDetailPointPanel" width="auto" class="sapUiResponsiveMargin">
+            <content>
+                <ObjectNumber
+                    id="employeesDetail"
+                    class="sapMObjectNumberLarge"
+                    active="false"
+                    unit="{i18n>employeesDetailTitle}"
+                    emphasized="true"
+                    textAlign="Center"
+                    state="None"/>
+            </content>
+        </Panel>
+        <layout:VerticalLayout
+            id="employeesDetailLayout"
+            class="sapUiContentPadding"
+            width="100%">
+            <Title id="employeesDetailNeedTitle" text="必要さんくる：{employees>necessaryPoints} {i18n>pointUnit}"></Title>
+            <Title id="employeesDetailPointsTitle" text="保有さんくる：{user>points} {i18n>pointUnit}"></Title>
+
+            <!-- <Text id="nameText" text="{employees>name}" />
+            <Text id="informationText" text="{employees>information}" />
+            <Text id="pointsText" text="{employees>necessaryPoints}" /> -->
+        </layout:VerticalLayout>
+    </Page>
+
+</mvc:View>

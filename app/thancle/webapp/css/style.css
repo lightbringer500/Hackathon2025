@@ -1,0 +1,29 @@
+/* ───── All Page ───── */
+
+
+
+/* ───── Home Page ───── */
+/* タスクリスト */
+.taskLabel div:first-child {
+    height: 3rem;
+}
+.taskLabel input:first-child {
+    font-size: 2rem;
+}
+.taskLabel {
+    margin: 1rem auto !important;
+}
+
+/* スタートボタン */
+.startButton {
+    height: 4rem !important;
+}
+.startButton > span {
+    height: 4rem !important;
+    font-size: 2rem;
+    text-align: center;
+    align-items: center;
+}
+#container-zynas.thancle---profile--startButton-BDI-content {
+    line-height: none !important;
+}

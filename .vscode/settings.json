@@ -1,0 +1,30 @@
+{
+  // uncomment entries once all libraries have been installed via 'npm install'
+  "eslint.validate": [
+    // "cds",
+    // "csn",
+    // "csv",
+    // "csv (semicolon)",
+    // "tab",
+    // "tsv"
+  ],
+  "cSpell.words": [
+    "approuter",
+    "buildpack",
+    "Cachebuster",
+    "cloudfoundry",
+    "cuid",
+    "fiori",
+    "mtar",
+    "odata",
+    "openui",
+    "sapui",
+    "sapux",
+    "thancle",
+    "webide",
+    "workzone",
+    "xssec",
+    "xsuaa",
+    "zynas"
+  ],
+}

@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog id="loginUserNotFoundDialog" title="Error" contentWidth="20rem" verticalScrolling="false" state="Error">
+        <buttons>
+            <Button id="loginUserNotFoundDialogCloseButton" text="Close" press="onDialogClose"/>
+        </buttons>
+        <IllustratedMessage 
+            id="loginUserNotFoundDialogMessage"
+            title="{i18n>loginUserNotFoundTitle}"
+            description="{i18n>loginUserNotFoundDescription}"
+            illustrationType="sapIllus-NoSearchResults"
+            />
+    </Dialog>
+</core:FragmentDefinition>
