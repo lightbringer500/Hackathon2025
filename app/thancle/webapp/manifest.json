@@ -215,6 +215,11 @@
           "pattern": "employees/{employeesId}",
           "name": "employeesDetail",
           "target": "employeesDetail"
+        },
+        {
+          "pattern": "timeEntry",
+          "name": "timeEntry",
+          "target": "timeEntry"
         }
       ],
       "targets": {
@@ -245,6 +250,10 @@
         "employeesDetail": {
           "id": "employeesDetail",
           "name": "EmployeesDetail"
+        },
+        "timeEntry": {
+          "id": "timeEntry",
+          "name": "TimeEntry"
         }
       }
     }

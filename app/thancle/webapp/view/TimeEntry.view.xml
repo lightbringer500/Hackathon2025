@@ -1,0 +1,64 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.TimeEntry">
+    <Panel id="timeEntryPointPanel" width="auto" class="sapUiResponsiveMargin">
+        <content>
+            <!-- 日付 -->
+            <Text id="currentTime" width="100%" textAlign="Center" />
+            <Button id="entryButton" text="登録" width="6rem"></Button>
+        </content>
+    </Panel>
+    <List id="timeEntry"
+        items="{
+            path: '/Employees',
+            model: 'employee'
+        }"
+        growing="true">
+        <CustomListItem id="timeEntryList">
+            <!-- 先頭の空白部分 -->
+            <Label id="emptyItem" width="1rem"/>
+            <!-- タスク名 -->
+            <Input
+                id="timeEntryListItem3"
+                width="40%" /> 
+            <!-- 空白部分 -->
+            <Label id="emptyItem2" width="1rem"/>
+            <!-- 経過時間 -->
+            <Input
+                id="timeEntryListItem2"
+                placeholder="time"
+                value=""
+                type="Number"
+                width="20%"
+                enabled="true" />
+            <!-- 空白部分 -->
+            <Label id="emptyItem3" width="1rem"/>
+            <!-- 開始/停止ボタン -->
+            <Button
+                id="startStopButton"
+                text="▶"
+                press=".onStartStopTask"
+                width="10%" />
+            <!-- 空白部分 -->
+            <Label id="emptyItem4" width="1rem"/>
+            <!-- 編集追加時間 -->                
+            <Input
+                id="timeEntryListItem"
+                placeholder="editTime"
+                value=""
+                type="Number"
+                width="10%" />
+        </CustomListItem>
+    </List>
+    <!-- リスト項目追加ボタン -->
+    <Label id="emptyItem5" width="1rem"/>
+    <Button id="itemAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="3rem"></Button>
+    <!-- 空白部分 -->
+    <!-- <Label id="emptyItem6" width="100%"/> -->
+    <!-- 画面下部の停止ボタン -->
+    <Panel id="stopButtonPanel" width="auto" class="sapUiResponsiveMargin">
+        <Button id="stopButton" text="停止" width="100%"></Button>
+    </Panel>
+</mvc:View>

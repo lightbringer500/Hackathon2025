@@ -136,5 +136,18 @@ sap.ui.define([
             this._oDialog.close();
         },
 
+        /**
+         * 時間計測ページを表示
+         * @memberOf zynas.thancle.controller.TimeEntry
+         * Author : watanabe shuto
+         */
+        onStartTask: function () {
+            //const oRouter = this.getOwnerComponent().getRouter();
+            //oRouter.navTo("empList");
+            var url = window.location.href.split('#')[0] + "#/timeEntry";
+            window.open(url, "_blank", "width=800,height=400");
+            
+        }
+
     });
 });
