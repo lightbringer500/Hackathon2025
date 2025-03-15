@@ -47,6 +47,14 @@
           "annotations": [],
           "odataVersion": "4.0"
         }
+      },
+      "templateService": {
+        "uri": "template/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -139,6 +147,15 @@
       },
       "employee": {
         "dataSource": "employeeService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "template": {
+        "dataSource": "templateService",
         "preload": true,
         "settings": {
           "operationMode": "Server",

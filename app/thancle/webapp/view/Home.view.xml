@@ -28,28 +28,45 @@
                 class="sapUiResponsiveMargin"
                 headerText="{i18n>PointTitle}">
                 <content>
-                    <Text id="todayText" width="100%" textAlign="Center" />
+                    <!-- 日付 -->
+                    <Text id="todayText" class="largeDateText" width="100%" textAlign="Center" />
                 </content>
             </Panel>
 
             <Panel id="homeButtonPanel" width="auto" class="sapUiResponsiveMargin">
-                <!-- 単価・保存ボタン -->
-                <Panel id="unitPanel">
-                    <Input id="oneDay" width="5%"></Input><Label id="oneDayLabel" text="{i18n>oneDayLabel}"></Label>
-                    <Input id="monthDays" width="5%"></Input><Label id="monthDaysLabel" text="{i18n>monthDaysLabel}"></Label>
-                    <Button id="templateButton" class="templateButton" text="{i18n>TemplateButton}" width="auto" press=""></Button>
+                <!-- 単価・登録ボタン -->
+                <Panel id="unitPanel" class="unitPanel" width="100%">
+                    <FlexBox id="flexBoxPanel" class="flexBoxPanel" direction="Row" wrap="NoWrap">
+                        <!-- 単価表示欄 -->
+                        <Panel id="oneAndMonthPanel" class="oneAndMonthPanel">
+                            <Input id="oneDayText" width="25%"></Input><Label id="oneDayLabel" class="labelMargin" text="{i18n>oneDayLabel}"></Label>
+                            <Input id="monthDaysText" width="25%"></Input><Label id="monthDaysLabel" class="labelMargin" text="{i18n>monthDaysLabel}"></Label>
+                        </Panel>
+
+                        <!-- テンプレート登録ボタン -->
+                        <Panel id="templateButtonPanel" class="templateButtonPanel">
+                            <Button id="templateButton" class="templateButton" text="{i18n>TemplateButton}" width="auto" press=""></Button>
+                        </Panel>
+                    </FlexBox>
                 </Panel>
                 
                 <!-- タスクリスト -->
-                <Panel id="taskPanel">
-                    <Input id="taskLabel1" class="taskLabel" placeholder="タスク1" width="60%" />
-                    <Input id="taskLabel2" class="taskLabel" placeholder="タスク2" width="60%" />
-                    <Input id="taskLabel3" class="taskLabel" placeholder="タスク3" width="60%" />
-                    <Button id="taskAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="60%" press=""></Button>
+                <Panel id="taskPanel" class="taskPanel">
+                    <Input id="taskLabel1" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
+                    <Input id="taskLabel2" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
+                    <Input id="taskLabel3" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
+                    <Input id="taskLabel4" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel5" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel6" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel7" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel8" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel9" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Input id="taskLabel10" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
+                    <Button id="taskAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="60%" press="onAddTask" />
                 </Panel>
 
                 <!-- スタートボタン -->
-                <Panel id="startPanel">
+                <Panel id="startPanel" class="startPanel">
                     <Button id="startButton" class="startButton" text="{i18n>StartButton}" width="20%" press=".onStartTask"/>
                 </Panel>
 

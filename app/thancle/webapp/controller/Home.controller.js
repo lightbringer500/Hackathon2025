@@ -1,6 +1,7 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment",
+    "sap/m/Input"
 ], (Controller, Fragment) => {
     'use strict';
 
@@ -19,10 +20,67 @@ sap.ui.define([
                     dataReceived: this._onDataReceived.bind(this),
                 }
             });
-
-            // 今日の日付を表示
-            this.byId("todayText").setText(new Date().toLocaleDateString());
+        
+            // 現在日時(毎秒更新)
+            this._updateDateTime();
+            setInterval(this._updateDateTime.bind(this), 1000);
         },
+        
+        /**
+         * 日付ラベル更新処理
+         */
+        _updateDateTime: function () {
+            // 日付取得
+            const now = new Date();
+        
+            // 日付
+            const formattedDate = now.toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric"
+            });
+            
+            // 曜日
+            const weekday = now.toLocaleDateString("ja-JP", { weekday: "short" }).charAt(0);
+            
+            // 時間 (HH:MM:SS)
+            const formattedTime = now.toLocaleTimeString("ja-JP", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
+            });
+
+            // 表示
+            const dateTimeString = `${formattedDate} (${weekday}) ${formattedTime}`;
+            this.byId("todayText").setText(dateTimeString);
+        },
+
+        /**
+         * タスク追加ボタン押下時
+         */
+        onAddTask: function () {
+            var i;
+            // 4～10番のタスクを順番に取得
+            for (i = 4; i <= 10; i++) {
+                var oTask = this.byId("taskLabel" + i);
+                if (!oTask.getVisible()) {
+                    oTask.setVisible(true); // 非表示のものを1つだけ表示
+                    break;
+                }
+            }
+            if (i == 10) {
+                this.byId("taskAddButton").setVisible(false);
+            }
+        },
+
+
+
+
+
+
+
+
 
         /**
          * ログインユーザー情報の取得結果により処理を実行する
@@ -78,31 +136,5 @@ sap.ui.define([
             this._oDialog.close();
         },
 
-        /**
-         * 賞品ページに遷移
-         * @memberOf zynas.thancle.controller.Home
-         */
-        onOpenPrizes: function(){
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("prizes");
-        },
-
-        /**
-         * ありがとうを贈るページに遷移
-         * @memberOf zynas.thancle.controller.Home
-         */
-        onPressThanksButton: function () {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("thanks");
-        },
-
-        /**
-         * 社員一覧ページに遷移
-         * 
-         */
-        onEmployeesButton: function () {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("employees");
-        },
     });
 });

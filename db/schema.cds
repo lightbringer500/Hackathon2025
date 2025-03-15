@@ -6,6 +6,27 @@ using {
 } from '@sap/cds/common';
 
 /**
+ * テンプレート情報
+ */
+entity Template {
+    key userId     : String     @mandatory;
+        oneDay     : Integer;
+        monthDays  : Integer;
+        task1      : String;
+        task2      : String;
+        task3      : String;
+        task4      : String;
+        task5      : String;
+        task6      : String;
+        task7      : String;
+        task8      : String;
+        task9      : String;
+        task10      : String;
+}
+
+
+
+/**
  * 社員
  */
 entity Employees {

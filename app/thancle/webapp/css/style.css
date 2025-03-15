@@ -3,7 +3,47 @@
 
 
 /* ───── Home Page ───── */
+
+/* 日付 */
+.largeDateText {
+	font-size: 2rem !important;
+	font-weight: bold;
+}
+/* 単価設定 */
+.flexBoxPanel > div:first-child {
+    width: 30%;
+    text-align: center;
+}
+#container-zynas\.thancle---home--oneAndMonthPanel-content {
+    background-color: rgb(180, 255, 255);
+}
+.labelMargin {
+    margin-left: 0.3rem;
+    margin-right: 1rem;
+    line-height: 2.5;
+}
+
+/* テンプレート登録ボタン */
+.flexBoxPanel > div {
+    width: 100%;
+}
+.templateButtonPanel {
+    text-align: right !important;
+}
+.templateButton {
+    height: auto !important;
+    width: 30%;
+}
+.templateButton > span {
+    height: 2.5rem !important;
+    text-align: center;
+    align-items: center;
+}
+
 /* タスクリスト */
+.taskPanel {
+    text-align: center;
+}
 .taskLabel div:first-child {
     height: 3rem;
 }
@@ -15,6 +55,9 @@
 }
 
 /* スタートボタン */
+.startPanel {
+    text-align: center;
+}
 .startButton {
     height: 4rem !important;
 }
@@ -24,6 +67,6 @@
     text-align: center;
     align-items: center;
 }
-#container-zynas.thancle---profile--startButton-BDI-content {
-    line-height: none !important;
+#container-zynas\.thancle---home--startButton-content {
+    line-height: 2.5rem !important;
 }
