@@ -33,6 +33,13 @@
         "auth": {
           "kind": "mocked",
           "users": {
+            "admin@example.com": {
+              "roles": [
+                "admin",
+                "user"
+              ],
+              "password": "admin"
+            },
             "test1@example.com": {
               "roles": [
                 "admin",

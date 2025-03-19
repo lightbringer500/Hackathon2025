@@ -25,6 +25,34 @@ entity Template {
 }
 
 
+/**
+ * 日付毎のタスク情報
+ */
+entity taskEntity {
+    key userId     : String     @mandatory;
+        date       : Date       @mandatory;
+        task1      : String;
+        task2      : String;
+        task3      : String;
+        task4      : String;
+        task5      : String;
+        task6      : String;
+        task7      : String;
+        task8      : String;
+        task9      : String;
+        task10     : String;
+        taskTime1  : Time;
+        taskTime2  : Time;
+        taskTime3  : Time;
+        taskTime4  : Time;
+        taskTime5  : Time;
+        taskTime6  : Time;
+        taskTime7  : Time;
+        taskTime8  : Time;
+        taskTime9  : Time;
+        taskTime10 : Time;
+}
+
 
 /**
  * 社員
