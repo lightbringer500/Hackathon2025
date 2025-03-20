@@ -55,6 +55,14 @@
           "annotations": [],
           "odataVersion": "4.0"
         }
+      },
+      "taskEntityService": {
+        "uri": "taskEntity/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -156,6 +164,15 @@
       },
       "template": {
         "dataSource": "templateService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "taskEntity": {
+        "dataSource": "taskEntityService",
         "preload": true,
         "settings": {
           "operationMode": "Server",

@@ -38,10 +38,6 @@
                 <Panel id="unitPanel" class="unitPanel" width="100%">
                     <FlexBox id="flexBoxPanel" class="flexBoxPanel" direction="Row" wrap="NoWrap">
                         <!-- 単価表示欄 -->
-                        <!-- <Panel id="oneAndMonthPanel" class="oneAndMonthPanel">
-                            <Input id="oneDayText" width="25%"></Input><Label id="oneDayLabel" class="labelMargin" text="{i18n>oneDayLabel}"></Label>
-                            <Input id="monthDaysText" width="25%"></Input><Label id="monthDaysLabel" class="labelMargin" text="{i18n>monthDaysLabel}"></Label>
-                        </Panel> -->
                         <Panel id="oneAndMonthPanel" class="oneAndMonthPanel">
                             <Input id="oneDayText" width="25%" value="{viewModel>/oneDay}" /><Label id="oneDayLabel" class="labelMargin" text="{i18n>oneDayLabel}" />
                             <Input id="monthDaysText" width="25%" value="{viewModel>/monthDays}" /><Label id="monthDaysLabel" class="labelMargin" text="{i18n>monthDaysLabel}" />
@@ -55,19 +51,6 @@
                 </Panel>
                 
                 <!-- タスクリスト -->
-                <!-- <Panel id="taskPanel" class="taskPanel">
-                    <Input id="taskLabel1" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
-                    <Input id="taskLabel2" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
-                    <Input id="taskLabel3" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" />
-                    <Input id="taskLabel4" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel5" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel6" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel7" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel8" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel9" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" visible="false" />
-                    <Input id="taskLabel10" class="taskLabel" placeholder="ここにタCスク名を入力" width="60%" visible="false" />
-                    <Button id="taskAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="60%" press=".onAddTask" />
-                </Panel> -->
                 <Panel id="taskPanel" class="taskPanel">
                     <Input id="taskLabel1" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" value="{viewModel>/tasks/0}" visible="{viewModel>/visibility/0}" />
                     <Input id="taskLabel2" class="taskLabel" placeholder="ここにタスク名を入力" width="60%" value="{viewModel>/tasks/1}" visible="{viewModel>/visibility/1}" />

@@ -124,12 +124,10 @@ sap.ui.define([
                 iNextTask++;
             }
         
-            // すべてのタスクが表示されたらボタンを非表示
+            // すべてのタスクが表示されたら追加ボタン非表示
             if (iNextTask >= 10) {
                 oView.byId("taskAddButton").setVisible(false);
             }
-        
-            console.log("onAddTask executed, next task index:", iNextTask);
         },
 
         /**
@@ -139,10 +137,9 @@ sap.ui.define([
         onPressTemplate: async function () {
             // 入力確認
             if (this._hasInputError()) {
-                MessageBox.alert(this._oI18nModel.getProperty("inputErrorMessage"));
+                MessageBox.confirm(this._oI18nModel.getProperty("inputErrorMessage"));
                 return;
             }
-            console.log("入力チェック通過");
 
             // モデル取得
             const oModel = this.getOwnerComponent().getModel("template");
@@ -155,11 +152,12 @@ sap.ui.define([
                     if (oAction !== MessageBox.Action.OK) return;
 
                     // 送信処理のパラメータ設定
-                    const { oneDay, monthDays, tasks } = oController._getParams();
+                    const { date, oneDay, monthDays, tasks } = oController._getParams();
                     const oOperation = oModel.bindContext("/templateAction(...)");
-                    oOperation.setParameter("oneDay", oneDay)
-                        .setParameter("monthDays", monthDays)
-                        .setParameter("tasks", JSON.stringify(tasks)); // タスク一覧をJSON文字列に変換
+                    oOperation
+                        .setParameter("oneDay", oneDay)                 // 1日の時間
+                        .setParameter("monthDays", monthDays)           // 月の日数
+                        .setParameter("tasks", JSON.stringify(tasks));  // タスク一覧(JSON文字列に変換)
 
                     // 処理実行
                     oOperation.invoke()
@@ -170,12 +168,57 @@ sap.ui.define([
                                 MessageBox.error(oController._oI18nModel.getProperty(error));
                                 return;
                             }
-                            // メッセージを表示して画面遷移
-                            // MessageToast.show(oController._oI18nModel.getProperty("templateSuccessMessage"));
-                            // setTimeout(() => {
-                            //     oController.onPressReTemplate();
-                            // }, 600);
-                            console.log("<<<<成功>>>>");
+                            // 登録成功メッセージを表示して画面再読み込み
+                            MessageBox.success(oController._oI18nModel.getProperty("templateSuccessMessage"));
+                            setTimeout(() => {
+                                location.reload();
+                            }, 600);
+                            console.log("─────テンプレート登録成功!!─────");
+                        })
+                        .catch(oError => oController._handlePresentError(oError));
+                }
+            });
+        },
+
+        /**
+         * 時間計測ページへの遷移 (初期データ登録)
+         * @memberOf zynas.thancle.controller.TimeEntry
+         * Author : watanabe shuto
+         */
+        onStartTask: function () {
+
+            console.log("─────▶ボタン押下─────")
+
+            // モデル取得
+            const oModel = this.getOwnerComponent().getModel("taskEntity");
+            const oController = this;
+
+            // 実行確認
+            MessageBox.confirm(this._oI18nModel.getProperty("startOfWorkMessage"), {
+                onClose: function (oAction) {
+                    // OK以外が押されたら何もしない
+                    if (oAction !== MessageBox.Action.OK) return;
+
+                    // 送信処理のパラメータ設定
+                    const { date, oneDay, monthDays, tasks } = oController._getParams();
+                    const oOperation = oModel.bindContext("/taskStartAction(...)");
+                    oOperation
+                        .setParameter("date", date)                    // 今日の日付
+                        .setParameter("tasks", JSON.stringify(tasks));  // タスク一覧(JSON文字列に変換)
+
+                    // 処理実行
+                    oOperation.invoke()
+                        .then(() => {
+                            const { error } = oOperation.getBoundContext().getValue();
+                            if (error) {
+                                // 登録時のチェックでエラー
+                                MessageBox.error(oController._oI18nModel.getProperty(error));
+                                return;
+                            }
+                            // 時間計測画面遷移
+                            console.log("─────タスク登録成功!!─────");
+                            var url = window.location.href.split('#')[0] + "#/timeEntry";
+                            window.open(url, "_blank", "width=800,height=400");
                         })
                         .catch(oError => oController._handlePresentError(oError));
                 }
@@ -209,6 +252,10 @@ sap.ui.define([
          * @memberOf zynas.thancle.controller.Thanks
          */
         _getParams: function () {
+            // 今日の日付
+			const today = new Date();
+			const todayFormatted = today.toISOString().split("T")[0]; // "YYYY-MM-DD"
+
             // 時間・日付
             const oneDay = this.byId("oneDayText").getValue();
             const monthDays = this.byId("monthDaysText").getValue();
@@ -225,16 +272,7 @@ sap.ui.define([
                 }
             }
         
-            return { "oneDay": oneDay, "monthDays": monthDays, "tasks": tasks };
-        },
-
-        /**
-         * ホームに戻る (再読み込み)
-         * @memberOf zynas.thancle.controller.Home
-         */
-        onPressReTemplate: function () {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("home");
+            return { "date": todayFormatted,"oneDay": oneDay, "monthDays": monthDays, "tasks": tasks };
         },
 
         /**
@@ -312,18 +350,7 @@ sap.ui.define([
             this._oDialog.close();
         },
 
-        /**
-         * 時間計測ページを表示
-         * @memberOf zynas.thancle.controller.TimeEntry
-         * Author : watanabe shuto
-         */
-        onStartTask: function () {
-            //const oRouter = this.getOwnerComponent().getRouter();
-            //oRouter.navTo("empList");
-            var url = window.location.href.split('#')[0] + "#/timeEntry";
-            window.open(url, "_blank", "width=800,height=400");
-            
-        }
+
 
     });
 });
