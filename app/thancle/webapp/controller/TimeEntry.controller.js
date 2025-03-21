@@ -189,4 +189,72 @@ sap.ui.define([
          * @param {String} value 変更後の値
          */
         _updateRemark: function (index, value) {
-            const tas
+            const task = this.tasks[index];
+            task.remark = parseInt(value);
+            // 分数として保持
+            task.elapsed = this._calculateTotalElapsed(task);
+            this._displayTasks();
+        },
+
+        /**
+         * 合計経過時間を計算する
+         * @param {Object} task タスクオブジェクト
+         * @returns {String} 合計経過時間(HH:mm形式)
+         */
+        _calculateTotalElapsed: function (task) {
+            const elapsedMinutes = this._parseElapsed(task.elapsed);
+            const remarkMinutes = task.remark;
+            const totalMinutes = elapsedMinutes + remarkMinutes;
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        },
+
+        /**
+         * 経過時間を分数に変換する
+         * @param {String} elapsed 経過時間(HH:mm形式)
+         * @returns {Number} 分数
+         */
+        _parseElapsed: function (elapsed) {
+            const parts = elapsed.split(":");
+            return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+        },
+        
+        /**
+         * 追加ボタンを表示する
+         */
+        _displayAddButton: function () {
+            const oView = this.getView();
+            const addButton = oView.byId("taskEntityAddButton");
+            if (!addButton) {
+                const addButton = new sap.m.Button({
+                    text: "＋",
+                    press: this.onAddTask.bind(this)
+                });
+                oView.addContent(addButton);
+                oView.byId("taskEntityAddButton") = addButton;
+            }
+        },
+        
+        /**
+         * タスクを追加する
+         */
+        _onAddTask: function () {
+            this._visibleTasksCount++;
+            this._displayTasks();
+            if (this._visibleTasksCount >= this.tasks.length) {
+                this.getView().byId("taskEntityAddButton").setVisible(false);
+            }
+        },
+        
+        /**
+         * タスク名を更新する
+         * @param {Number} index タスクのインデックス
+         * @param {String} value 変更後の値
+         */
+        _updateTaskName: function (index, value) {
+            this.tasks[index].name = value;
+        },
+        
+    });
+});
