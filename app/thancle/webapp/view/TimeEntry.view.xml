@@ -10,48 +10,16 @@
             <Button id="entryButton" text="登録" width="6rem"></Button>
         </content>
     </Panel>
-    <List id="timeEntry"
-        items="{
-            path: '/Employees',
-            model: 'employee'
-        }"
-        growing="true">
-        <CustomListItem id="timeEntryList">
-            <!-- 先頭の空白部分 -->
-            <Label id="emptyItem" width="1rem"/>
-            <!-- タスク名 -->
-            <Input
-                id="timeEntryListItem3"
-                width="40%" /> 
-            <!-- 空白部分 -->
-            <Label id="emptyItem2" width="1rem"/>
-            <!-- 経過時間 -->
-            <Input
-                id="timeEntryListItem2"
-                placeholder="time"
-                value=""
-                type="Number"
-                width="20%"
-                enabled="true" />
-            <!-- 空白部分 -->
-            <Label id="emptyItem3" width="1rem"/>
-            <!-- 開始/停止ボタン -->
-            <Button
-                id="startStopButton"
-                text="▶"
-                press=".onStartStopTask"
-                width="10%" />
-            <!-- 空白部分 -->
-            <Label id="emptyItem4" width="1rem"/>
-            <!-- 編集追加時間 -->                
-            <Input
-                id="timeEntryListItem"
-                placeholder="editTime"
-                value=""
-                type="Number"
-                width="10%" />
-        </CustomListItem>
-    </List>
+     <Page id="taskPage" title="タスク管理">
+        <!-- タスクリスト -->
+        <headerContent>
+            <Text id="timeEntryText" />
+        </headerContent>
+        <content>
+            <List id="taskList" />
+            <Button id="taskEntityAddButton" />
+        </content>
+    </Page>
     <!-- リスト項目追加ボタン -->
     <Label id="emptyItem5" width="1rem"/>
     <Button id="itemAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="3rem"></Button>
