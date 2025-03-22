@@ -14,9 +14,20 @@ sap.ui.define([
          * @memberOf zynas.thancle.controller.Home
          */
         onInit: function () {
+
             const oView = this.getView();
+            const oModel = this.getOwnerComponent().getModel("user");
+        
+            console.log("モデル取得:", oModel);
+        
+            if (!oModel) {
+                console.error("モデル 'user' が未設定です！");
+                return;
+            }
+
+            // const oView = this.getView();
             oView.bindElement({
-                path: "/home",
+                path: "/profile",
                 model: "user",
                 events: {
                     dataReceived: this._onDataReceived.bind(this),
@@ -169,11 +180,13 @@ sap.ui.define([
                                 return;
                             }
                             // 登録成功メッセージを表示して画面再読み込み
-                            MessageBox.success(oController._oI18nModel.getProperty("templateSuccessMessage"));
-                            setTimeout(() => {
-                                location.reload();
-                            }, 600);
                             console.log("─────テンプレート登録成功!!─────");
+                            MessageBox.success(oController._oI18nModel.getProperty("templateSuccessMessage"), {
+                                onClose: function () {
+                                    location.reload(); // 画面リロード
+                                }
+                            });
+                            
                         })
                         .catch(oError => oController._handlePresentError(oError));
                 }
@@ -305,10 +318,10 @@ sap.ui.define([
         _onDataReceived: function (oEvent) {
             const oContext = oEvent.getSource().getBoundContext();
             if (oContext.getProperty("email")) {
-                this._setVisibleAdminButton(oContext);
+                // this._setVisibleAdminButton(oContext);
                 return;
             }
-            this._openDialog();
+            // this._openDialog();
         },
 
         /**
@@ -317,38 +330,38 @@ sap.ui.define([
          *
          * @param {*} oContext 
          */
-        _setVisibleAdminButton: function (oContext) {
-            const isAdmin = !!oContext.getProperty("roles/admin");
-            const oAdminButton = this.byId("homeHeaderButton");
-            oAdminButton.setVisible(isAdmin);
-        },
+        // _setVisibleAdminButton: function (oContext) {
+        //     const isAdmin = !!oContext.getProperty("roles/admin");
+        //     const oAdminButton = this.byId("homeHeaderButton");
+        //     oAdminButton.setVisible(isAdmin);
+        // },
 
         /**
          * NotFoundダイアログを表示する
          * @memberOf zynas.thancle.controller.Home
          */
-        _openDialog: function () {
-            if (!this._oDialog) {
-                Fragment.load({
-                    name: "zynas.thancle.view.fragments.LoginUserNotFoundDialog",
-                    controller: this
-                }).then(function (oDialog) {
-                    this._oDialog = oDialog;
-                    this.getView().addDependent(this._oDialog);
-                    this._oDialog.open();
-                }.bind(this));
-            } else {
-                this._oDialog.open();
-            }
-        },
+        // _openDialog: function () {
+        //     if (!this._oDialog) {
+        //         Fragment.load({
+        //             name: "zynas.thancle.view.fragments.LoginUserNotFoundDialog",
+        //             controller: this
+        //         }).then(function (oDialog) {
+        //             this._oDialog = oDialog;
+        //             this.getView().addDependent(this._oDialog);
+        //             this._oDialog.open();
+        //         }.bind(this));
+        //     } else {
+        //         this._oDialog.open();
+        //     }
+        // },
 
         /**
          * ダイアログを閉じる
          * @memberOf zynas.thancle.controller.Home
          */
-        onDialogClose: function () {
-            this._oDialog.close();
-        },
+        // onDialogClose: function () {
+        //     this._oDialog.close();
+        // },
 
 
 

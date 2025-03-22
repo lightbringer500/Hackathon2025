@@ -30,3 +30,8 @@ Authorization: Basic test1@example.com:abc
 # ログインユーザー情報を取得する
 GET {{baseUrl}}/profile
 Authorization: Basic admin@example.com:admin
+
+### ------------------------------------------------------------------------
+# ログインユーザー情報を取得する
+GET {{baseUrl}}/home
+Authorization: Basic admin@example.com:admin

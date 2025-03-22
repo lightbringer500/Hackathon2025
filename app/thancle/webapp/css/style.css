@@ -70,3 +70,48 @@
 #container-zynas\.thancle---home--startButton-content {
     line-height: 2.5rem !important;
 }
+
+
+
+/* ───── TimeEntry Page ───── */
+
+/* タスクリスト */
+#container-zynas\.thancle---timeEntry--vBox > div {
+    height: 4rem;
+}
+.hSub1 {
+    width: 55%;
+}
+.hSub2 {
+    width: 20%;
+}
+.hSub3 {
+    width: 10%;
+}
+.hSub4 {
+    width: 10%;
+}
+.hSub1 div:first-child,
+.hSub2 div:first-child,
+.hSub3 div:first-child,
+.hSub4 div:first-child {
+    width: 100%;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.measureLabel div:first-child {
+    height: 3rem;
+}
+.measureLabel input:first-child {
+    font-size: 1.5rem;
+}
+/* 再生停止ボタン */
+ .measureToggleButtom {
+    width: 100%;
+}
+.measureToggleButtom > span {
+    height: 3rem !important;
+    font-size: 1rem;
+    text-align: center;
+    align-items: center;
+}
