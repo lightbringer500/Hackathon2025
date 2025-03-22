@@ -273,6 +273,20 @@ sap.ui.define([
             setInterval(this._updateDateTime.bind(this), 1000);
             
             // 初期データ表示
+			const oModel = new JSONModel({
+				tasks: Array.from({ length: 10 }, () => ({
+					name: "",
+					label: "00:00:00",
+                    buttonText: "▶",
+					adjustValue: "",
+					visible: false,
+					started: false,     // タイマー動作状態
+					startTime: null,    // 開始時間
+                    elapsedTime: 0,     // 経過時間
+					timerId: null       // setInterval の ID
+				}))
+			});
+			this.getView().setModel(oModel, "viewModel");
             this._loadInitialData();
 		},
 
@@ -315,7 +329,12 @@ sap.ui.define([
                                 name: taskName,
                                 label: taskTime,
                                 visible: isVisible,
-                                adjustValue: "" // 初期値として空欄
+                                buttonText: "▶",
+                                adjustValue: "",
+                                started: false,  // タイマー動作状態
+                                startTime: null, // 開始時間
+                                elapsedTime: 0,  // 経過時間
+                                timerId: null    // setInterval の ID
                             });
                         }
                         oModel.setProperty("/tasks", tasks);
@@ -326,6 +345,82 @@ sap.ui.define([
 					console.error(err);
 				}
 			});
+		},
+        
+        /**
+		 * ボタン押下時のタスク開始/停止処理
+		 */
+		onToggleTask: function (oEvent) {
+			const oButton = oEvent.getSource();
+			const sId = oButton.getId();
+			const iIndex = parseInt(sId.replace(/\D/g, ""), 10) - 1; // IDからインデックス取得
+
+			const oModel = this.getView().getModel("viewModel");
+			const aTasks = oModel.getProperty("/tasks");
+
+			// 現在再生中のタスクを探す
+			const iRunningIndex = aTasks.findIndex(task => task.started);
+
+			// すでに再生中のタスクを停止
+			if (iRunningIndex !== -1) {
+				this._stopTimer(iRunningIndex);
+			}
+
+			// 同じボタンなら停止、それ以外なら新規再生
+			if (iRunningIndex !== iIndex) {
+				this._startTimer(iIndex);
+			}
+		},
+
+		/**
+		 * 指定したタスクのタイマーを開始
+		 */
+		_startTimer: function (iIndex) {
+			const oModel = this.getView().getModel("viewModel");
+			const aTasks = oModel.getProperty("/tasks");
+
+			aTasks[iIndex].started = true;
+			aTasks[iIndex].startTime = new Date();
+			aTasks[iIndex].timerId = setInterval(() => {
+				// const elapsed = this._calculateElapsed(aTasks[iIndex].startTime);
+                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, aTasks[iIndex].elapsedTime);
+				oModel.setProperty(`/tasks/${iIndex}/label`, elapsed);
+			}, 1000);
+
+			// ボタンの表示を変更
+			oModel.setProperty(`/tasks/${iIndex}/buttonText`, "⏸");
+			oModel.refresh();
+		},
+
+		/**
+		 * 指定したタスクのタイマーを停止
+		 */
+		_stopTimer: function (iIndex) {
+			const oModel = this.getView().getModel("viewModel");
+			const aTasks = oModel.getProperty("/tasks");
+
+			clearInterval(aTasks[iIndex].timerId);
+			aTasks[iIndex].started = false;
+			// aTasks[iIndex].timerId = null;
+            aTasks[iIndex].elapsedTime += (new Date() - aTasks[iIndex].startTime);	aTasks[iIndex].timerId = null;
+            aTasks[iIndex].timerId = null;
+
+			// ボタンの表示を元に戻す
+			oModel.setProperty(`/tasks/${iIndex}/buttonText`, "▶");
+			oModel.refresh();
+		},
+
+		/**
+		 * 経過時間を計算
+		 */
+		_calculateElapsed: function (startTime, elapsedTime) {
+			const now = new Date();
+			// const diff = now - startTime; // ミリ秒差分
+            const diff = now - startTime + elapsedTime;
+			const seconds = Math.floor(diff / 1000) % 60;
+			const minutes = Math.floor(diff / 60000) % 60;
+			const hours = Math.floor(diff / 3600000);
+			return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 		},
 
         /**
