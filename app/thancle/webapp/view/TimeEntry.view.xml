@@ -43,7 +43,7 @@
         <content>
             <!-- 日付 -->
             <Text id="currentTime" width="100%" textAlign="Center" />
-            <Button id="entryButton" text="登録" width="6rem"></Button>
+            <Button id="entryButton" text="登録" width="6rem" press=".onEndTask"></Button>
         </content>
     </Panel>
 

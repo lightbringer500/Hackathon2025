@@ -231,7 +231,7 @@ sap.ui.define([
                             // 時間計測画面遷移
                             console.log("─────タスク登録成功!!─────");
                             var url = window.location.href.split('#')[0] + "#/timeEntry";
-                            window.open(url, "_blank", "width=800,height=400");
+                            window.open(url, "_blank", "width=800,height=550");
                         })
                         .catch(oError => oController._handlePresentError(oError));
                 }

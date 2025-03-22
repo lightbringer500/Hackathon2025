@@ -19,5 +19,12 @@ service TaskEntityService @(path: '/taskEntity') {
     action taskStartAction(date : db.taskEntity:date, tasks : LargeString) returns {
         error : String
     };
+
+    /**
+     * 今日のタスク更新
+     */
+    action taskEndAction(date : db.taskEntity:date, tasks : LargeString, taskTimes : LargeString) returns {
+        error : String
+    };
 }
 

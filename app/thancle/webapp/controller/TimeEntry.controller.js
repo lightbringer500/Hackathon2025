@@ -261,8 +261,9 @@
 
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+    "sap/m/MessageBox"
+], function (Controller, JSONModel, MessageBox) {
 	"use strict";
 
 	return Controller.extend("zynas.thancle.controller.TimeEntry", {
@@ -469,11 +470,15 @@ sap.ui.define([
             this.byId("currentTime").setText(dateTimeString);
         },
 
-		onAddTask: function () {
-			// モデル取得
-			var viewModel = this.getView().getModel("viewModel");
-			var tasks = viewModel.getProperty("/tasks");
+        /**
+         * タスクデータ更新
+         */
+        onEndTask: async function () {
+            // モデルとコントローラ取得
+            const oModel = this.getOwnerComponent().getModel("task");
+            const oController = this;
 
+<<<<<<< Updated upstream
 			// 空いているスロットを探す
 			for (var i = 0; i < tasks.length; i++) {
 				if (!tasks[i].visible) {
@@ -522,5 +527,93 @@ sap.ui.define([
             oInput.setValueState("None");
             oInput.setValueStateText("");
           }
+=======
+            // 画面のタスクデータ取得
+            const oView = this.getView();
+            const oViewModel = oView.getModel("viewModel");
+            const oData = oViewModel.getData();
+
+            // タスクデータをリスト化
+            const tasks = [];
+            const taskTimes = [];
+
+            for (let i = 0; i < 10; i++) {
+                if (oData.tasks[i].visible) {
+                    tasks.push(oData.tasks[i].name);
+                    taskTimes.push(oData.tasks[i].label); // 経過時間
+                } else {
+                    tasks.push("");  // 非表示のタスクは空文字
+                    taskTimes.push("");
+                }
+            }
+
+            console.log(tasks);
+            console.log(taskTimes);
+
+
+            // 今日の日付を取得
+			const today = new Date();
+			const todayFormatted = today.toISOString().split("T")[0]; // "YYYY-MM-DD"
+
+            // JSONデータ作成
+            const oPayload = {
+                // userId: "admin",  // 本来はログインユーザ情報から取得
+                date: todayFormatted,
+                tasks: JSON.stringify(tasks),
+                taskTimes: JSON.stringify(taskTimes)
+            };
+
+            // 実行確認
+            MessageBox.confirm("タスクを登録しますか？", {
+                onClose: function (oAction) {
+                    if (oAction !== MessageBox.Action.OK) return;
+ 
+                    // OData アクションの実行
+                    const oOperation = oModel.bindContext("/taskEndAction(...)");
+                    oOperation
+                        .setParameter("date", oPayload.date)
+                        .setParameter("tasks", oPayload.tasks)
+                        .setParameter("taskTimes", oPayload.taskTimes);
+
+                    // 実行
+                    oOperation.invoke()
+                        .then(() => {
+                            const { error } = oOperation.getBoundContext().getValue();
+                            if (error) {
+                                // MessageBox.error("timeErrorMessage");
+                                return;
+                            }
+                            // MessageBox.success(oController._oI18nModel.getProperty("timeEndSuccessMessage"), {
+                            //     onClose: function () {
+                            //         location.reload();
+                            //     }
+                            // });
+                        })
+                        .catch(oError => {
+                            console.error("登録エラー:", oError);
+                            // MessageBox.error("timeErrorMessage");
+                        });
+                }
+            });
+        }
+    
+
+        
+		// onAddTask: function () {
+		// 	// モデル取得
+		// 	var viewModel = this.getView().getModel("viewModel");
+		// 	var tasks = viewModel.getProperty("/tasks");
+
+		// 	// 空いているスロットを探す
+		// 	for (var i = 0; i < tasks.length; i++) {
+		// 		if (!tasks[i].visible) {
+		// 			// 新しいタスクを追加
+		// 			tasks[i] = { name: "新規タスク", label: "新しい作業", extraValue: "", visible: true };
+		// 			viewModel.setProperty("/tasks", tasks);
+		// 			break;
+		// 		}
+		// 	}
+		// }
+>>>>>>> Stashed changes
 	});
 });
