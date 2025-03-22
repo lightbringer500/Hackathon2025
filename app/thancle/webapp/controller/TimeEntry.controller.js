@@ -382,8 +382,11 @@ sap.ui.define([
 			aTasks[iIndex].started = true;
 			aTasks[iIndex].startTime = new Date();
 			aTasks[iIndex].timerId = setInterval(() => {
-				// const elapsed = this._calculateElapsed(aTasks[iIndex].startTime);
-                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, aTasks[iIndex].elapsedTime);
+                // 追加時間の取得
+                const itemStr = "measureAdjust" + (iIndex + 1);
+                var oInput = this.byId(itemStr);
+                var sValue = oInput.getValue();
+                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, sValue);
 				oModel.setProperty(`/tasks/${iIndex}/label`, elapsed);
 			}, 1000);
 
@@ -413,15 +416,28 @@ sap.ui.define([
 		/**
 		 * 経過時間を計算
 		 */
-		_calculateElapsed: function (startTime, elapsedTime) {
-			const now = new Date();
-			// const diff = now - startTime; // ミリ秒差分
-            const diff = now - startTime + elapsedTime;
-			const seconds = Math.floor(diff / 1000) % 60;
-			const minutes = Math.floor(diff / 60000) % 60;
-			const hours = Math.floor(diff / 3600000);
-			return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-		},
+		_calculateElapsed: function(startTime, elapsedTime) {
+            const now = new Date();
+            let diff;
+        
+            // "-"のみの場合は経過時間を計算しない
+            if (elapsedTime === "-") {
+                diff = now - startTime;
+            } else {
+                // elapsedTimeを分からミリ秒に変換
+                const elapsedMilliseconds = elapsedTime * 60 * 1000;
+                diff = now - startTime + elapsedMilliseconds;
+            }
+        
+            // マイナス値の場合は0に設定
+            diff = Math.max(diff, 0);
+        
+            const seconds = Math.floor(diff / 1000) % 60;
+            const minutes = Math.floor(diff / 60000) % 60;
+            const hours = Math.floor(diff / 3600000);
+        
+            return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        },
 
         /**
          * 日付ラベル更新処理
@@ -467,6 +483,44 @@ sap.ui.define([
 					break;
 				}
 			}
-		}
+		},
+
+        /**
+         * 時間追加分の入力時の制限
+         * 数値とハイフン（マイナス）許可
+         */
+        onValidateInput: function(oEvent) {
+            var sValue = oEvent.getParameter("value"); // 入力値を取得
+            var oInput = oEvent.getSource(); // Inputコントロール自体を取得
+          
+            // 空の場合はエラーをリセット
+            if (sValue === "") {
+              oInput.setValueState("None");
+              oInput.setValueStateText("");
+              return;
+            }
+          
+            // 正規表現パターン
+            var regexValid = /^-?[0-9]*$/; // 数値と先頭ハイフンのみ許可
+            var regexLeadingHyphen = /^-/; // ハイフンが先頭にあるか確認
+          
+            // 入力値が不正な場合
+            if (!regexValid.test(sValue)) {
+              oInput.setValueState("Error");
+              oInput.setValueStateText("数値と先頭のハイフンのみ入力可能です");
+              return;
+            }
+          
+            // ハイフンが先頭以外にある場合
+            if (sValue.includes("-") && !regexLeadingHyphen.test(sValue)) {
+              oInput.setValueState("Error");
+              oInput.setValueStateText("ハイフンは先頭にのみ許可されています");
+              return;
+            }
+          
+            // 入力が有効な場合
+            oInput.setValueState("None");
+            oInput.setValueStateText("");
+          }
 	});
 });
