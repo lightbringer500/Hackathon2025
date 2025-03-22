@@ -9,24 +9,10 @@
         id="homePage"
         title="{i18n>Title}"
         class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content">
-        <headerContent>
-            <Button
-                id="homeHeaderButton"
-                icon="sap-icon://business-by-design"
-                tooltip="{i18n>admin}"
-                visible="false"/>
-        </headerContent>
         <content>
-            <ObjectHeader id="homeHeader" title="{user>name}">
-                <attributes>
-                    <ObjectAttribute id="homeEmailAddress" text="{user>email}"/>
-                </attributes>
-            </ObjectHeader>
-
             <Panel id="homePoint"
                 width="auto"
-                class="sapUiResponsiveMargin"
-                headerText="{i18n>PointTitle}">
+                class="sapUiResponsiveMargin">
                 <content>
                     <!-- 日付 -->
                     <Text id="todayText" class="largeDateText" width="100%" textAlign="Center" />
