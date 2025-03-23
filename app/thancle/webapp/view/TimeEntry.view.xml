@@ -1,55 +1,18 @@
-<!-- <mvc:View
-    xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:html="http://www.w3.org/1999/xhtml"
-    controllerName="zynas.thancle.controller.TimeEntry">
-    <Panel id="timeEntryPointPanel" width="auto" class="sapUiResponsiveMargin">
-        <content> -->
-            <!-- 日付 -->
-            <!-- <Text id="currentTime" width="100%" textAlign="Center" />
-            <Button id="entryButton" text="登録" width="6rem"></Button>
-        </content>
-    </Panel> -->
-     <!-- <Page id="taskPage" title="タスク管理"> -->
-        <!-- タスクリスト -->
-        <!-- <headerContent>
-            <Text id="timeEntryText" />
-        </headerContent>
-        <content>
-            <List id="taskList" />
-            <Button id="taskEntityAddButton" />
-        </content>
-    </Page> -->
-    <!-- リスト項目追加ボタン -->
-    <!-- <Label id="emptyItem5" width="1rem"/>
-    <Button id="itemAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="3rem"></Button> -->
-    <!-- 空白部分 -->
-    <!-- <Label id="emptyItem6" width="100%"/> -->
-    <!-- 画面下部の停止ボタン -->
-    <!-- <Panel id="stopButtonPanel" width="auto" class="sapUiResponsiveMargin">
-        <Button id="stopButton" text="停止" width="100%"></Button>
-    </Panel>
-</mvc:View> -->
-
-
-
 <mvc:View
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
     xmlns:html="http://www.w3.org/1999/xhtml"
 	controllerName="zynas.thancle.controller.TimeEntry">
 
-    <Panel id="timeEntryPointPanel" width="auto" class="sapUiResponsiveMargin">
-        <content>
-            <!-- 日付 -->
-            <Text id="currentTime" width="100%" textAlign="Center" />
-            <Button id="entryButton" text="登録" width="6rem" press=".onEndTask"></Button>
-        </content>
-    </Panel>
-
-
-
 	<Page id="measurePage" title="タスク管理">
+        <Panel id="timeEntryPointPanel" width="auto" class="sapUiResponsiveMargin">
+            <content>
+                <!-- 日付 -->
+                <Text id="currentTime" width="100%" textAlign="Center" />
+                <Button id="entryButton" text="登録" width="6rem" press=".onEndTask"></Button>
+            </content>
+        </Panel>
+
         <!-- タスクリスト -->
 		<Panel id="measurePanel" class="measurePanel">
 			<VBox id="vBox">

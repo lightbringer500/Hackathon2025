@@ -59,14 +59,14 @@ class TaskEntityService extends cds.ApplicationService {
     /**
      * 今日のタスクを更新
      */
-	async registerTask(req) {
-        const userId = "admin";
+	async onTaskEnd(req) {
+		const userId = "admin";
 		const { date, tasks, taskTimes } = req.data;
 
-        console.log("サーバー到達");
-        console.log(date);
-        console.log(tasks);
-        console.log(taskTimes);
+		console.log("サーバー到達");
+		console.log(date);
+		console.log(tasks);
+		console.log(taskTimes);
 
 		// JSONをオブジェクト化
 		let taskList = [];
@@ -83,46 +83,49 @@ class TaskEntityService extends cds.ApplicationService {
 		const db = cds.transaction(req);
 
 		try {
-			// 既存データ削除
-			await db.run(DELETE.from('zynas.thancle.taskEntity').where({ userId, date }));
+			// 既存データチェック
+			const existing = await db.run(
+				SELECT.from('zynas.thancle.taskEntity').where({ userId, date })
+			);
+			if (existing.length === 0) {
+				return { error: "recordNotFound" };
+			}
 
-			// 新規データ登録
+			// レコード更新
 			await db.run(
-				INSERT.into('zynas.thancle.taskEntity').entries({
-					userId,
-					date,
-					task1: taskList[0],
-					task2: taskList[1],
-					task3: taskList[2],
-					task4: taskList[3],
-					task5: taskList[4],
-					task6: taskList[5],
-					task7: taskList[6],
-					task8: taskList[7],
-					task9: taskList[8],
-					task10: taskList[9],
-					taskTime1: taskTimeList[0] || null,
-					taskTime2: taskTimeList[1] || null,
-					taskTime3: taskTimeList[2] || null,
-					taskTime4: taskTimeList[3] || null,
-					taskTime5: taskTimeList[4] || null,
-					taskTime6: taskTimeList[5] || null,
-					taskTime7: taskTimeList[6] || null,
-					taskTime8: taskTimeList[7] || null,
-					taskTime9: taskTimeList[8] || null,
-					taskTime10: taskTimeList[9] || null
-				})
+				cds.ql.UPDATE('zynas.thancle.taskEntity')
+					.set({
+						task1: taskList[0],
+						task2: taskList[1],
+						task3: taskList[2],
+						task4: taskList[3],
+						task5: taskList[4],
+						task6: taskList[5],
+						task7: taskList[6],
+						task8: taskList[7],
+						task9: taskList[8],
+						task10: taskList[9],
+						taskTime1: taskTimeList[0] || null,
+						taskTime2: taskTimeList[1] || null,
+						taskTime3: taskTimeList[2] || null,
+						taskTime4: taskTimeList[3] || null,
+						taskTime5: taskTimeList[4] || null,
+						taskTime6: taskTimeList[5] || null,
+						taskTime7: taskTimeList[6] || null,
+						taskTime8: taskTimeList[7] || null,
+						taskTime9: taskTimeList[8] || null,
+						taskTime10: taskTimeList[9] || null
+					})
+					.where({ userId, date })
 			);
 
-			console.log("タスク登録成功:", userId, date);
+			console.log("タスク更新成功:", userId, date);
 			return { success: true };
 		} catch (error) {
 			console.error("DBエラー:", error);
-			return { error: "dbInsertError" };
+			return { error: "dbUpdateError" };
 		}
 	}
-
-    
 }
 
 module.exports = TaskEntityService;

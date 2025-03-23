@@ -262,7 +262,7 @@ sap.ui.define([
         /**
          * 画面に入力されたパラメータを取得する
          * @returns 
-         * @memberOf zynas.thancle.controller.Thanks
+         * @memberOf zynas.thancle.controller.Home
          */
         _getParams: function () {
             // 今日の日付
@@ -295,7 +295,7 @@ sap.ui.define([
          */
         _handlePresentError: function (oError) {
             // メッセージを表示
-            MessageToast.show(this._oI18nModel.getProperty("templateErrorMessage"));
+            MessageBox.error(this._oI18nModel.getProperty("templateErrorMessage"));
             console.error(oError);
         },
         
