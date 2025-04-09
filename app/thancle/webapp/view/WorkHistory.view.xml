@@ -19,7 +19,7 @@
                 id="workHistoryItem"
                 type="Navigation"
                 title="{taskEntity>date}"
-                description="{= ${taskEntity>totalTime} + ' 時間' }"
+                description="{= ${taskEntity>totalTime}}"
                 press=".onOpenTaskDetail"
             />
         </List>

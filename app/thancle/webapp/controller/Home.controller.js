@@ -230,7 +230,8 @@ sap.ui.define([
                             }
                             // 時間計測画面遷移
                             console.log("─────タスク登録成功!!─────");
-                            var url = window.location.href.split('#')[0] + "#/timeEntry";
+                            const selectedDate = new Date().toISOString().split('T')[0];
+                            const url = window.location.href.split('#')[0] + "#/timeEntry/" + selectedDate;
                             window.open(url, "_blank", "width=800,height=550");
                         })
                         .catch(oError => oController._handlePresentError(oError));

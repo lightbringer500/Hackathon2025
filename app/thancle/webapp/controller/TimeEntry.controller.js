@@ -10,10 +10,6 @@ sap.ui.define([
 
             // メッセージの取得元
             this._oI18nModel = this.getOwnerComponent().getModel("i18n");
-
-            // 現在日時(毎秒更新)
-            this._updateDateTime();
-            setInterval(this._updateDateTime.bind(this), 1000);
             
             // 初期データ表示
 			const oModel = new JSONModel({
@@ -31,39 +27,44 @@ sap.ui.define([
 			});
 			this.getView().setModel(oModel, "viewModel");
 
-            console.log("あいう");
-
             // 日付取得 → 初期データ表示
-            const testDate = "";
-            // const oComponent = this.getOwnerComponent();
-            // const oRouter = oComponent.getRouter();
-            // oRouter.getRoute("TimeEntry").attachPatternMatched(this._onPatternMatched, this);
-            // // クエリパラメータ取得
-            // const oParams = new URLSearchParams(window.location.search);
-            // const sDateParam = oParams.get("date");
-            
-            // 対象日のデータを表示
-            this._onPatternMatched(testDate);
+            const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("timeEntry").attachPatternMatched(this._onPatternMatched, this);
 		},
 
- 		/**
-		 * 日付取得
-		 */
-        _onPatternMatched: function(formattedDate) {        
-            if (!formattedDate) {
-                console.warn("本日の日付を取得");
-                // 今日の日付を yyyy-MM-dd 形式で取得
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, "0");
-                const day = String(today.getDate()).padStart(2, "0");
-                formattedDate = `${year}-${month}-${day}`;
-            } else {
-                console.log("対象日：" + formattedDate);
-            }
+        /**
+         * 日付取得
+         */
+        _onPatternMatched: function (oEvent) {
+            const sDate = oEvent.getParameter("arguments").date || this._getToday();
+            console.log("対象日:", sDate);
 
-            // 初期データロード
-            this._loadInitialData(formattedDate);
+			// 基準日として保存
+			this._baseDate = new Date(sDate);
+
+			// 日付＋時刻表示（初回）
+			this._updateDateTime(this._baseDate);
+
+			// 毎秒更新（時間のみ）
+			clearInterval(this._timerInterval); // 既存のインターバルをクリア（重複防止）
+			this._timerInterval = setInterval(() => {
+				this._updateDateTime(this._baseDate);
+			}, 1000);
+
+
+            // 初期表示処理
+            this._loadInitialData(sDate);
+        },
+        
+        /**
+         * 今日の日付を取得
+         */
+        _getToday: function () {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         },
 
  		/**
@@ -215,36 +216,34 @@ sap.ui.define([
         
             return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
         },
-
-        /**
-         * 日付ラベル更新処理
-         */
-        _updateDateTime: function () {
-            // 日付取得
-            const now = new Date();
         
-            // 日付
-            const formattedDate = now.toLocaleDateString("ja-JP", {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric"
-            });
-            
-            // 曜日
-            const weekday = now.toLocaleDateString("ja-JP", { weekday: "short" }).charAt(0);
-            
-            // 時間 (HH:MM:SS)
-            const formattedTime = now.toLocaleTimeString("ja-JP", {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false
-            });
+		/**
+		 * 日付＋時刻の表示更新（時刻のみリアルタイム）
+		 * @param {Date} baseDate - 表示基準日（固定）
+		 */
+		_updateDateTime: function (baseDate) {
+			const now = new Date();
 
-            // 表示
-            const dateTimeString = `${formattedDate} (${weekday}) ${formattedTime}`;
-            this.byId("currentTime").setText(dateTimeString);
-        },
+			// 固定日付のフォーマット
+			const formattedDate = baseDate.toLocaleDateString("ja-JP", {
+				year: "numeric",
+				month: "numeric",
+				day: "numeric"
+		 });
+			const weekday = baseDate.toLocaleDateString("ja-JP", { weekday: "short" }).charAt(0);
+
+			// 現在時刻のフォーマット
+			const formattedTime = now.toLocaleTimeString("ja-JP", {
+				hour: "2-digit",
+				minute: "2-digit",
+				second: "2-digit",
+				hour12: false
+			});
+
+			// 結合してラベル表示
+			const dateTimeString = `${formattedDate} (${weekday}) ${formattedTime}`;
+			this.byId("currentTime").setText(dateTimeString);
+		},
 
         /**
          * 時間追加分の入力時の制限
@@ -334,9 +333,11 @@ sap.ui.define([
          * @memberOf zynas.thancle.controller.TimeEntity
          */
         _getParams: function () {
-            // 今日の日付
-			const today = new Date();
-			const todayFormatted = today.toISOString().split("T")[0]; // "YYYY-MM-DD"
+            // ラベル日付取得&整形
+			const currentTimeText = this.byId("currentTime").getText();
+			const datePart = currentTimeText.split(" ")[0];
+			const [year, month, day] = datePart.split("/");
+			const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
             // 画面のタスクデータ取得
             const oView = this.getView();
@@ -356,7 +357,7 @@ sap.ui.define([
                 }
             }
         
-            return { "date": todayFormatted, "tasks": tasks, "taskTimes": taskTimes };
+            return { "date": formattedDate, "tasks": tasks, "taskTimes": taskTimes };
         },
 
         /**

@@ -11,15 +11,15 @@ sap.ui.define([
             const oView = this.getView();
             this._oRouter = this.getOwnerComponent().getRouter();
 
-            // 1. 空のviewModelを作成
+            // 初期化
             let oViewModel = new JSONModel({
                 taskEntity: []
             });
 
-            // 2. viewModelをビューにセット
+            // modelセット
             this.getView().setModel(oViewModel, "taskEntity");
 
-            // 3. taskEntityデータを読み込む
+            // 初期表示
             this._loadTaskEntityData();
         },
 
@@ -52,12 +52,25 @@ sap.ui.define([
                             task.taskTime9, task.taskTime10
                         ];
 
-                        // 合計時間を計算 (nullやundefinedの場合は0として計算)
-                        const totalTime = taskTimes.reduce((acc, time) => acc + (time ? parseFloat(time) : 0), 0);
+                        // 合計時間を計算（時間、分、秒を秒に変換して合算）
+                        const totalSeconds = taskTimes.reduce((acc, time) => {
+                            if (time) {
+                                const [hours, minutes, seconds] = time.split(":").map(num => parseInt(num, 10));
+                                return acc + (hours * 3600) + (minutes * 60) + seconds; // 秒単位で加算
+                            }
+                            return acc;
+                        }, 0);
+
+                        // 合計秒数を時間、分、秒に変換
+                        const totalHours = Math.floor(totalSeconds / 3600); // 時間部分
+                        const totalMinutes = Math.floor((totalSeconds % 3600) / 60); // 分部分
+
+                        // HH時間MM分 形式で表示
+                        const formattedTime = `${totalHours}時間${totalMinutes}分`;
 
                         return {
                             date: task.date,
-                            totalTime: totalTime.toFixed(2),  // 小数点2桁にフォーマット
+                            totalTime: formattedTime,
                             raw: task  // 生データ
                         };
                     });
@@ -97,33 +110,20 @@ sap.ui.define([
          * 作業履歴詳細ページに遷移
          */
         onOpenTaskDetail: function (oEvent) {
-            // const oContext = oEvent.getSource().getBindingContext("taskEntity");
-            // if (!oContext) {
-            //     return;
-            // }
+            const oContext = oEvent.getSource().getBindingContext("taskEntity");
+            if (!oContext) {
+                return;
+            }
+        
+            const selectedDate = oContext.getProperty("date");
+            if (!selectedDate) {
+                console.error("日付が取得できませんでした");
+                return;
+            }
 
-            // // 作業履歴のIDを抽出
-            // const sPath = oContext.getPath();
-            // const sId = sPath.split('(').flatMap(path => path.split(')'))[1];
-            // if (!sId) {
-            //     return;
-            // }
-
-            // // 詳細ページに遷移
-            // this._oRouter.navTo("taskDetail", {
-            //     taskId: window.encodeURIComponent(sId)
-            // });
-
-            var url = window.location.href.split('#')[0] + "#/timeEntry";
+            // 詳細ページに遷移
+            const url = window.location.href.split('#')[0] + "#/timeEntry/" + selectedDate;
             window.open(url, "_blank", "width=800,height=550");
-
-            // const selectedDate = "2025-04-05";
-            // const baseUrl = window.location.href.split('#')[0];
-            // const url = `${baseUrl}#/timeEntry?date=${encodeURIComponent(selectedDate)}`;
-
-            // var date = "2025-04-06"; // 動的に変える
-            // var url = window.location.origin + window.location.pathname + "#/timeEntry?date=" + date;
-            // window.open(url, "_blank", "width=800,height=550");
         }
     });
 });

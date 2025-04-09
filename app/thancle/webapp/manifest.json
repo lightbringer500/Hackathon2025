@@ -251,7 +251,7 @@
           "target": "employeesDetail"
         },
         {
-          "pattern": "timeEntry",
+          "pattern": "timeEntry/{date}",
           "name": "timeEntry",
           "target": "timeEntry"
         },
