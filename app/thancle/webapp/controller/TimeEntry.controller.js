@@ -163,7 +163,7 @@ sap.ui.define([
                 // 追加時間の取得
                 const itemStr = "measureAdjust" + (iIndex + 1);
                 var oInput = this.byId(itemStr);
-                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, aTasks[iIndex].elapsedTime);
+                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, aTasks[iIndex].elapsedTime, oInput.getValue());
 				oModel.setProperty(`/tasks/${iIndex}/label`, elapsed);
 			}, 1000);
 
@@ -192,7 +192,7 @@ sap.ui.define([
 		/**
 		 * 経過時間を計算
 		 */
-		_calculateElapsed: function(startTime, elapsedTime) {
+		_calculateElapsed: function(startTime, elapsedTime, addTime) {
             const now = new Date();
             let diff;
 
@@ -206,7 +206,12 @@ sap.ui.define([
                 // 計算
                 diff = now - startTime + elapsedTime;
             }
-        
+
+            // 追加時間を加算
+            if(this._isValidAddTime(addTime)){
+                diff = diff + (Number(addTime) * 60 * 1000); // addTimeを分として扱い、ミリ秒に変換
+            }
+
             // マイナス値の場合は0に設定
             diff = Math.max(diff, 0);
         
@@ -252,35 +257,68 @@ sap.ui.define([
         onValidateInput: function(oEvent) {
             var sValue = oEvent.getParameter("value"); // 入力値を取得
             var oInput = oEvent.getSource(); // Inputコントロール自体を取得
-          
+            
+            const strId = oInput.getId().toString();
+            // 正規表現で「measureAdjust」に続く数字を抽出
+            const match = strId.match(/measureAdjust(\d+)/);
+            
+            let numberStr = null; // 数値部分を文字列として格納する変数を事前に定義
+            if (match) {
+                numberStr = match[1]; // 数値を取得
+            } else {
+                console.log("数字が見つかりませんでした");
+                return;
+            }
+
             // 空の場合はエラーをリセット
             if (sValue === "") {
               oInput.setValueState("None");
               oInput.setValueStateText("");
-              return;
+              sValue = 0;
             }
-          
-            // 正規表現パターン
-            var regexValid = /^-?[0-9]*$/; // 数値と先頭ハイフンのみ許可
-            var regexLeadingHyphen = /^-/; // ハイフンが先頭にあるか確認
           
             // 入力値が不正な場合
-            if (!regexValid.test(sValue)) {
+            if (!this._isValidAddTime(sValue)) {
               oInput.setValueState("Error");
               oInput.setValueStateText("数値と先頭のハイフンのみ入力可能です");
-              return;
-            }
-          
-            // ハイフンが先頭以外にある場合
-            if (sValue.includes("-") && !regexLeadingHyphen.test(sValue)) {
-              oInput.setValueState("Error");
-              oInput.setValueStateText("ハイフンは先頭にのみ許可されています");
               return;
             }
           
             // 入力が有効な場合
             oInput.setValueState("None");
             oInput.setValueStateText("");
+
+            const timeItem = this.byId("measureTime" + numberStr);
+            const hBoxItem = this.byId("hBox" + numberStr);
+            // 既存のCustomDataを更新
+            var customData = hBoxItem.getCustomData().find(data => data.getKey() === "keepAddTime");
+            console.log(timeItem.getValue());
+            console.log(customData.getValue());
+
+
+            // 要素の値を取得（例: "12:01:00"）
+            const timeValue = timeItem.getValue(); // 取得する時間は "hh:mm:ss" 形式
+
+            // 時間をパースしてDateオブジェクトを作成
+            const [hours, minutes, seconds] = timeValue.split(":").map(Number); // 秒も含めて分解
+            let date = new Date();
+            date.setHours(hours, minutes, seconds, 0); // 時間、分、秒をセット
+            
+            // 時間を追加
+            date.setMinutes(date.getMinutes() + (Number(sValue) - Number(customData.getValue())));
+
+            // 新しい時間を手動でフォーマット (hh:mm:ss)
+            const updatedTime = [
+                String(date.getHours()).padStart(2, '0'), // 時間 (2桁)
+                String(date.getMinutes()).padStart(2, '0'), // 分 (2桁)
+                String(date.getSeconds()).padStart(2, '0') // 秒 (2桁)
+            ].join(":");
+
+            // 表示時間に変更時間をセット
+            timeItem.setValue(updatedTime);
+            // 今回の追加時間を保管
+            customData.setValue(Number(sValue));
+
         },
 
         /**
@@ -369,6 +407,15 @@ sap.ui.define([
             // メッセージを表示
             MessageBox.error(this._oI18nModel.getProperty("timeErrorMessage"));
             console.error(oError);
+        },
+
+        /**
+         * 数値チェック関数
+         */
+        _isValidAddTime: function (num) {
+            // 正規表現パターン: 整数（マイナス符号付きも許容）
+            const pattern = /^-?\d+$/;
+            return pattern.test(num.toString());
         },
     
 
