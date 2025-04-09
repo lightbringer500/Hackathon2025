@@ -8,43 +8,23 @@
         class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
         showNavButton="true"
         navButtonPress=".onNavBack">
-        <!-- <headerContent>
-            <Toolbar id="prizeToolbar">
-				<SearchField id="prizeSearch" width="100%"/>
-				<Text text="Default Search" id="idSearchListToolbar"/>
-			</Toolbar>
-        </headerContent> -->
-        <Panel id="employeesPanel" width="auto" class="sapUiResponsiveMargin">
-            <content>
-                <ObjectNumber
-                    id="Employees"
-                    class="sapMObjectNumberLarge"
-                    active="false"
-                    unit="{i18n>employeesTitle}"
-                    emphasized="true"
-                    textAlign="Center"
-                    state="None"/>
-            </content>
-        </Panel>
-        <List id="employeesList"
+        <List id="employeeList"
             items="{
                 path: '/Employees',
                 model: 'employee',
                 parameters: {
-                    $orderby: 'ID asc'
+                    $orderby: 'ID asc, name asc'
                 }
             }"
             growing="true">
             <StandardListItem
                 type="Navigation"
-                id="employeesItem"
+                id="employeeItem"
                 title="{employee>name}"
-                description="{employee>ID}"
-                info="{employee>email}"
-                iconDensityAware="false"
-                iconInset="false"
+                description="{employee>email}"
+                info="{employee>ID}"
                 adaptTitleSize="false"
-                press=".onOpenEmployeesDetail">
+                press=".onOpenEmployeeDetail">
             </StandardListItem>
         </List>
     </Page>

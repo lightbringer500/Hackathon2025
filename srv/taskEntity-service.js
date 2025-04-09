@@ -31,23 +31,29 @@ class TaskEntityService extends cds.ApplicationService {
         const db = cds.transaction(req);
 
         try {
-            // 1. 既存データを削除
-            await db.run(DELETE.from('zynas.thancle.TaskEntity').where({ userId }));
+			// 既存データチェック
+			const existingData = await db.run(SELECT.from('zynas.thancle.TaskEntity').where({ userId, date }));
 
-            // 2. 新規データを挿入
+            // データセット
             const insertData = {
                 userId,
                 date
             };
-
             // task1～task10 に値をセット
             for (let i = 0; i < 10; i++) {
                 insertData[`task${i + 1}`] = taskList[i] || ""; // タスクが少ない場合、空文字をセット
             }
 
-            await db.run(INSERT.into('zynas.thancle.TaskEntity').entries(insertData));
+			// 登録or更新処理
+			if (existingData.length > 0) {
+				// 既存データがある場合は更新
+				await db.run(UPDATE('zynas.thancle.TaskEntity').set(insertData).where({ userId, date }));
+			} else {
+				// 既存データがない場合は挿入
+				await db.run(INSERT.into('zynas.thancle.TaskEntity').entries(insertData));
+			}
 
-            // 登録成功
+            // 成功
             return { error: "" };
 
         } catch (err) {
@@ -63,7 +69,7 @@ class TaskEntityService extends cds.ApplicationService {
 		const userId = "admin";
 		const { date, tasks, taskTimes } = req.data;
 
-		console.log("サーバー到達");
+		console.log("───タスク更新処理開始───")
 		console.log(date);
 		console.log(tasks);
 		console.log(taskTimes);
@@ -119,7 +125,7 @@ class TaskEntityService extends cds.ApplicationService {
 					.where({ userId, date })
 			);
 
-			console.log("タスク更新成功:", userId, date);
+			console.log("───タスク更新成功 : ", userId, date + " ───");
 			return { success: true };
 		} catch (error) {
 			console.error("DBエラー:", error);

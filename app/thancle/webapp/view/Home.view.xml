@@ -9,8 +9,11 @@
         id="homePage"
         title="{i18n>Title}"
         class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content">
+        <headerContent>
+            <Button id="workHistoryButton" text="{i18n>WorkHistoryButton}" press=".onWorkHistory" />
+        </headerContent>
         <content>
-            <Panel id="homePoint"
+            <Panel id="homePanel"
                 width="auto"
                 class="sapUiResponsiveMargin">
                 <content>

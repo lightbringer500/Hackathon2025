@@ -30,26 +30,53 @@ sap.ui.define([
 				}))
 			});
 			this.getView().setModel(oModel, "viewModel");
-            this._loadInitialData();
+
+            console.log("あいう");
+
+            // 日付取得 → 初期データ表示
+            const testDate = "";
+            // const oComponent = this.getOwnerComponent();
+            // const oRouter = oComponent.getRouter();
+            // oRouter.getRoute("TimeEntry").attachPatternMatched(this._onPatternMatched, this);
+            // // クエリパラメータ取得
+            // const oParams = new URLSearchParams(window.location.search);
+            // const sDateParam = oParams.get("date");
+            
+            // 対象日のデータを表示
+            this._onPatternMatched(testDate);
 		},
+
+ 		/**
+		 * 日付取得
+		 */
+        _onPatternMatched: function(formattedDate) {        
+            if (!formattedDate) {
+                console.warn("本日の日付を取得");
+                // 今日の日付を yyyy-MM-dd 形式で取得
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, "0");
+                const day = String(today.getDate()).padStart(2, "0");
+                formattedDate = `${year}-${month}-${day}`;
+            } else {
+                console.log("対象日：" + formattedDate);
+            }
+
+            // 初期データロード
+            this._loadInitialData(formattedDate);
+        },
 
  		/**
 		 * 初期データを取得してモデルにセット
 		 */
-		_loadInitialData: function () {
+		_loadInitialData: function (formattedDate) {
             // モデルを取得し、未設定なら新しく作成
             let oModel = this.getView().getModel("viewModel");
             if (!oModel) {
                 oModel = new JSONModel({ tasks: [] });
                 this.getView().setModel(oModel, "viewModel");
             }
-
-            // 今日の日付を yyyy-MM-dd 形式で取得
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, "0");
-            const day = String(today.getDate()).padStart(2, "0");
-            const formattedDate = `${year}-${month}-${day}`;
+            console.log("モデル取得:", oModel);
 
             // OData サービスからデータ取得
             $.ajax({
@@ -67,6 +94,13 @@ sap.ui.define([
                             const taskName = taskData[`task${i}`] || "";
                             const taskTime = taskData[`taskTime${i}`] || "00:00:00";
                             const isVisible = taskName !== ""; // データがある場合のみ表示
+                            
+                            // データがあれば経過時間をセット
+                            const timeParts = taskTime.split(":");
+                            const hours = parseInt(timeParts[0], 10);
+                            const minutes = parseInt(timeParts[1], 10);
+                            const seconds = parseInt(timeParts[2], 10);
+                            const elapsedTime = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
                             tasks.push({
                                 name: taskName,
@@ -74,10 +108,10 @@ sap.ui.define([
                                 visible: isVisible,
                                 buttonText: "▶",
                                 adjustValue: "",
-                                started: false,  // タイマー動作状態
-                                startTime: null, // 開始時間
-                                elapsedTime: 0,  // 経過時間
-                                timerId: null    // setInterval の ID
+                                started: false,             // タイマー動作状態
+                                startTime: null,            // 開始時間
+                                elapsedTime: elapsedTime,   // 経過時間(ミリ秒)
+                                timerId: null               // setInterval の ID
                             });
                         }
                         oModel.setProperty("/tasks", tasks);
@@ -128,8 +162,7 @@ sap.ui.define([
                 // 追加時間の取得
                 const itemStr = "measureAdjust" + (iIndex + 1);
                 var oInput = this.byId(itemStr);
-                var sValue = oInput.getValue();
-                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, sValue);
+                const elapsed = this._calculateElapsed(aTasks[iIndex].startTime, aTasks[iIndex].elapsedTime);
 				oModel.setProperty(`/tasks/${iIndex}/label`, elapsed);
 			}, 1000);
 
@@ -147,8 +180,7 @@ sap.ui.define([
 
 			clearInterval(aTasks[iIndex].timerId);
 			aTasks[iIndex].started = false;
-			// aTasks[iIndex].timerId = null;
-            aTasks[iIndex].elapsedTime += (new Date() - aTasks[iIndex].startTime);	aTasks[iIndex].timerId = null;
+            aTasks[iIndex].elapsedTime += (new Date() - aTasks[iIndex].startTime);
             aTasks[iIndex].timerId = null;
 
 			// ボタンの表示を元に戻す
@@ -162,14 +194,16 @@ sap.ui.define([
 		_calculateElapsed: function(startTime, elapsedTime) {
             const now = new Date();
             let diff;
+
+            console.log("すたーとたいむ : " + startTime);
+            console.log("経過時間？ : " + elapsedTime);
         
             // "-"のみの場合は経過時間を計算しない
             if (elapsedTime === "-") {
                 diff = now - startTime;
             } else {
-                // elapsedTimeを分からミリ秒に変換
-                const elapsedMilliseconds = elapsedTime * 60 * 1000;
-                diff = now - startTime + elapsedMilliseconds;
+                // 計算
+                diff = now - startTime + elapsedTime;
             }
         
             // マイナス値の場合は0に設定

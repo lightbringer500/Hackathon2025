@@ -63,6 +63,14 @@
           "annotations": [],
           "odataVersion": "4.0"
         }
+      },
+      "workHistoryService": {
+        "uri": "workHistory/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -180,6 +188,15 @@
           "earlyRequests": true
         }
       },
+      "workHistory": {
+        "dataSource": "workHistoryService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
       "@i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "uri": "i18n/i18n.properties"
@@ -237,6 +254,11 @@
           "pattern": "timeEntry",
           "name": "timeEntry",
           "target": "timeEntry"
+        },
+        {
+          "pattern": "workHistory",
+          "name": "workHistory",
+          "target": "workHistory"
         }
       ],
       "targets": {
@@ -271,6 +293,10 @@
         "timeEntry": {
           "id": "timeEntry",
           "name": "TimeEntry"
+        },
+        "workHistory": {
+          "id": "workHistory",
+          "name": "WorkHistory"
         }
       }
     }

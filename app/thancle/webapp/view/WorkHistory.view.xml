@@ -1,0 +1,27 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    controllerName="zynas.thancle.controller.WorkHistory">
+    <Page id="workHistoryPage"
+        title="{i18n>workHistoryTitle}"
+        class="sapUiContentPadding sapUiResponsivePadding--header sapUiResponsivePadding--content"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+        <List
+            id="historyList"
+            items="{
+                path: 'taskEntity>/taskEntity'
+            }"
+            growing="true"
+        >
+            <StandardListItem
+                id="workHistoryItem"
+                type="Navigation"
+                title="{taskEntity>date}"
+                description="{= ${taskEntity>totalTime} + ' 時間' }"
+                press=".onOpenTaskDetail"
+            />
+        </List>
+    </Page>
+</mvc:View>

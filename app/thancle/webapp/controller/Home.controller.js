@@ -298,6 +298,20 @@ sap.ui.define([
             MessageBox.error(this._oI18nModel.getProperty("templateErrorMessage"));
             console.error(oError);
         },
+
+        /**
+         * 履歴ページへ遷移
+         * @param {*} oError 
+         * @memberOf zynas.thancle.controller.WorkHistory
+         */
+        onWorkHistory: function() {
+            console.log("─────履歴ボタン押下─────");
+
+            // 履歴ページ遷移
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("workHistory");
+        },
+
         
 
 

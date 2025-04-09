@@ -30,7 +30,7 @@ entity Template {
  */
 entity taskEntity {
     key userId     : String     @mandatory;
-        date       : Date       @mandatory;
+    key date       : Date       @mandatory;
         task1      : String;
         task2      : String;
         task3      : String;
