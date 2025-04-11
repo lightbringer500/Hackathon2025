@@ -148,7 +148,7 @@ sap.ui.define([
 
             // 詳細ページに遷移
             const url = window.location.href.split('#')[0] + "#/timeEntry/" + selectedDate;
-            window.open(url, "_blank", "width=800,height=550");
+            window.open(url, "_blank", "width=800,height=625");
         }
     });
 });

@@ -232,7 +232,7 @@ sap.ui.define([
                             console.log("─────タスク登録成功!!─────");
                             const selectedDate = new Date().toISOString().split('T')[0];
                             const url = window.location.href.split('#')[0] + "#/timeEntry/" + selectedDate;
-                            window.open(url, "_blank", "width=800,height=550");
+                            window.open(url, "_blank", "width=800,height=625");
                         })
                         .catch(oError => oController._handlePresentError(oError));
                 }

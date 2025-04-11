@@ -19,70 +19,70 @@
 			<VBox id="vBox">
                 <HBox id="hBox1" alignItems="Center" width="100%" visible="{viewModel>/tasks/0/visible}">
                     <HBox id="hSub1-1" class="hSub1"><Input id="measureName1" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/0/name}" /></HBox>
-                    <HBox id="hSub1-2" class="hSub2"><Input id="measureTime1" class="measureLabel measureTime" value="{viewModel>/tasks/0/label}" /></HBox>
+                    <HBox id="hSub1-2" class="hSub2"><Input id="measureTime1" class="measureLabel measureTime" value="{viewModel>/tasks/0/label}" editable="false" /></HBox>
                     <HBox id="hSub1-3" class="hSub3"><Button id="measureButton1" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/0/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub1-4" class="hSub4"><Input id="measureAdjust1" class="measureLabel measureAdjust" value="{viewModel>/tasks/0/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox2" alignItems="Center" width="100%" visible="{viewModel>/tasks/1/visible}">
                     <HBox id="hSub2-1" class="hSub1"><Input id="measureName2" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/1/name}" /></HBox>
-                    <HBox id="hSub2-2" class="hSub2"><Input id="measureTime2" class="measureLabel measureTime" value="{viewModel>/tasks/1/label}" /></HBox>
+                    <HBox id="hSub2-2" class="hSub2"><Input id="measureTime2" class="measureLabel measureTime" value="{viewModel>/tasks/1/label}" editable="false" /></HBox>
                     <HBox id="hSub2-3" class="hSub3"><Button id="measureButton2" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/1/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub2-4" class="hSub4"><Input id="measureAdjust2" class="measureLabel measureAdjust" value="{viewModel>/tasks/1/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox3" alignItems="Center" width="100%" visible="{viewModel>/tasks/2/visible}">
                     <HBox id="hSub3-1" class="hSub1"><Input id="measureName3" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/2/name}" /></HBox>
-                    <HBox id="hSub3-2" class="hSub2"><Input id="measureTime3" class="measureLabel measureTime" value="{viewModel>/tasks/2/label}" /></HBox>
+                    <HBox id="hSub3-2" class="hSub2"><Input id="measureTime3" class="measureLabel measureTime" value="{viewModel>/tasks/2/label}" editable="false" /></HBox>
                     <HBox id="hSub3-3" class="hSub3"><Button id="measureButton3" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/2/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub3-4" class="hSub4"><Input id="measureAdjust3" class="measureLabel measureAdjust" value="{viewModel>/tasks/2/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox4" alignItems="Center" width="100%" visible="{viewModel>/tasks/3/visible}">
                     <HBox id="hSub4-1" class="hSub1"><Input id="measureName4" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/3/name}" /></HBox>
-                    <HBox id="hSub4-2" class="hSub2"><Input id="measureTime4" class="measureLabel measureTime" value="{viewModel>/tasks/3/label}" /></HBox>
+                    <HBox id="hSub4-2" class="hSub2"><Input id="measureTime4" class="measureLabel measureTime" value="{viewModel>/tasks/3/label}" editable="false" /></HBox>
                     <HBox id="hSub4-3" class="hSub3"><Button id="measureButton4" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/3/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub4-4" class="hSub4"><Input id="measureAdjust4" class="measureLabel measureAdjust" value="{viewModel>/tasks/3/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox5" alignItems="Center" width="100%" visible="{viewModel>/tasks/4/visible}">
                     <HBox id="hSub5-1" class="hSub1"><Input id="measureName5" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/4/name}" /></HBox>
-                    <HBox id="hSub5-2" class="hSub2"><Input id="measureTime5" class="measureLabel measureTime" value="{viewModel>/tasks/4/label}" /></HBox>
+                    <HBox id="hSub5-2" class="hSub2"><Input id="measureTime5" class="measureLabel measureTime" value="{viewModel>/tasks/4/label}" editable="false" /></HBox>
                     <HBox id="hSub5-3" class="hSub3"><Button id="measureButton5" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/4/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub5-4" class="hSub4"><Input id="measureAdjust5" class="measureLabel measureAdjust" value="{viewModel>/tasks/4/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox6" alignItems="Center" width="100%" visible="{viewModel>/tasks/5/visible}">
                     <HBox id="hSub6-1" class="hSub1"><Input id="measureName6" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/5/name}" /></HBox>
-                    <HBox id="hSub6-2" class="hSub2"><Input id="measureTime6" class="measureLabel measureTime" value="{viewModel>/tasks/5/label}" /></HBox>
+                    <HBox id="hSub6-2" class="hSub2"><Input id="measureTime6" class="measureLabel measureTime" value="{viewModel>/tasks/5/label}" editable="false" /></HBox>
                     <HBox id="hSub6-3" class="hSub3"><Button id="measureButton6" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/5/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub6-4" class="hSub4"><Input id="measureAdjust6" class="measureLabel measureAdjust" value="{viewModel>/tasks/5/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox7" alignItems="Center" width="100%" visible="{viewModel>/tasks/6/visible}">
                     <HBox id="hSub7-1" class="hSub1"><Input id="measureName7" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/6/name}" /></HBox>
-                    <HBox id="hSub7-2" class="hSub2"><Input id="measureTime7" class="measureLabel measureTime" value="{viewModel>/tasks/6/label}" /></HBox>
+                    <HBox id="hSub7-2" class="hSub2"><Input id="measureTime7" class="measureLabel measureTime" value="{viewModel>/tasks/6/label}" editable="false" /></HBox>
                     <HBox id="hSub7-3" class="hSub3"><Button id="measureButton7" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/6/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub7-4" class="hSub4"><Input id="measureAdjust7" class="measureLabel measureAdjust" value="{viewModel>/tasks/6/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox8" alignItems="Center" width="100%" visible="{viewModel>/tasks/7/visible}">
                     <HBox id="hSub8-1" class="hSub1"><Input id="measureName8" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/7/name}" /></HBox>
-                    <HBox id="hSub8-2" class="hSub2"><Input id="measureTime8" class="measureLabel measureTime" value="{viewModel>/tasks/7/label}" /></HBox>
+                    <HBox id="hSub8-2" class="hSub2"><Input id="measureTime8" class="measureLabel measureTime" value="{viewModel>/tasks/7/label}" editable="false" /></HBox>
                     <HBox id="hSub8-3" class="hSub3"><Button id="measureButton8" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/7/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub8-4" class="hSub4"><Input id="measureAdjust8" class="measureLabel measureAdjust" value="{viewModel>/tasks/7/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox9" alignItems="Center" width="100%" visible="{viewModel>/tasks/8/visible}">
                     <HBox id="hSub9-1" class="hSub1"><Input id="measureName9" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/8/name}" /></HBox>
-                    <HBox id="hSub9-2" class="hSub2"><Input id="measureTime9" class="measureLabel measureTime" value="{viewModel>/tasks/8/label}" /></HBox>
+                    <HBox id="hSub9-2" class="hSub2"><Input id="measureTime9" class="measureLabel measureTime" value="{viewModel>/tasks/8/label}" editable="false" /></HBox>
                     <HBox id="hSub9-3" class="hSub3"><Button id="measureButton9" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/8/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub9-4" class="hSub4"><Input id="measureAdjust9" class="measureLabel measureAdjust" value="{viewModel>/tasks/8/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
                 <HBox id="hBox10" alignItems="Center" width="100%" visible="{viewModel>/tasks/9/visible}">
                     <HBox id="hSub10-1" class="hSub1"><Input id="measureName10" class="measureLabel" placeholder="新しいタスク名を入力" value="{viewModel>/tasks/9/name}" /></HBox>
-                    <HBox id="hSub10-2" class="hSub2"><Input id="measureTime10" class="measureLabel measureTime" value="{viewModel>/tasks/9/label}" /></HBox>
+                    <HBox id="hSub10-2" class="hSub2"><Input id="measureTime10" class="measureLabel measureTime" value="{viewModel>/tasks/9/label}" editable="false" /></HBox>
                     <HBox id="hSub10-3" class="hSub3"><Button id="measureButton10" class="measureLabel measureToggleButtom" text="{viewModel>/tasks/9/buttonText}" press=".onToggleTask" /></HBox>
                     <HBox id="hSub10-4" class="hSub4"><Input id="measureAdjust10" class="measureLabel measureAdjust" value="{viewModel>/tasks/9/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
