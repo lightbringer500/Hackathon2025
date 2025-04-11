@@ -18,10 +18,8 @@ sap.ui.define([
             const oView = this.getView();
             const oModel = this.getOwnerComponent().getModel("user");
         
-            console.log("モデル取得:", oModel);
-        
             if (!oModel) {
-                console.error("モデル 'user' が未設定です！");
+                console.error("モデル 'user' が未設定");
                 return;
             }
 
@@ -146,6 +144,8 @@ sap.ui.define([
          * @memberOf zynas.thancle.controller.Home
          */
         onPressTemplate: async function () {
+            console.log("─────テンプレートボタン押下─────");
+
             // 入力確認
             if (this._hasInputError()) {
                 MessageBox.confirm(this._oI18nModel.getProperty("inputErrorMessage"));

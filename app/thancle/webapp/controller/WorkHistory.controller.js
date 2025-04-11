@@ -29,19 +29,39 @@ sap.ui.define([
         _loadTaskEntityData: function () {
             const oModel = this.getOwnerComponent().getModel("taskEntity");
             if (!oModel) {
-                console.error("モデル 'taskEntity' が正しく取得できていません。");
                 return;
             }
 
             // ユーザーID取得
             var userId = "admin";
+
+            let oneDayCalc = 0;
+            let monthDaysCalc = 0;
+
+            // 基準工数の取得
+			$.ajax({
+				url: "/template/Template?$filter=userId eq 'admin'", // userId は適宜変更
+				method: "GET",
+				success: function (data) {
+					if (data.value.length > 0) {
+						let templateData = data.value[0];
+
+                        // 人日、人月の基準値を取得
+                        oneDayCalc = templateData.oneDay;
+                        monthDaysCalc = templateData.monthDays;
+					}
+				},
+				error: function (err) {
+					MessageToast.show("データの取得に失敗しました");
+					console.error(err);
+				}
+			});
             
-            // OData サービスからデータ取得
+            // タスク情報の取得
             $.ajax({
                 url: `/taskEntity/TaskEntity?$filter=userId eq 'admin'`,
                 method: "GET",
                 success: function (data) {
-                    console.log(data);
 
                     // taskEntity のデータを計算する
                     const oTaskEntity = data.value.map(task => {
@@ -64,13 +84,22 @@ sap.ui.define([
                         // 合計秒数を時間、分、秒に変換
                         const totalHours = Math.floor(totalSeconds / 3600); // 時間部分
                         const totalMinutes = Math.floor((totalSeconds % 3600) / 60); // 分部分
-
                         // HH時間MM分 形式で表示
                         const formattedTime = `${totalHours}時間${totalMinutes}分`;
+
+                        // 人日計算
+                        let oneDayCalcResult = totalSeconds / (oneDayCalc * 3600);
+                        oneDayCalcResult = (Math.round(oneDayCalcResult * 100) / 100) + '人日'
+
+                        // 人月計算
+                        let monthDaysCalcResult = totalSeconds / (monthDaysCalc * oneDayCalc * 3600);
+                        monthDaysCalcResult = (Math.round(monthDaysCalcResult * 1000) / 1000) + '人月';
 
                         return {
                             date: task.date,
                             totalTime: formattedTime,
+                            oneDayCalc: oneDayCalcResult,
+                            monthDaysCalc: monthDaysCalcResult,
                             raw: task  // 生データ
                         };
                     });
@@ -78,11 +107,6 @@ sap.ui.define([
                     // 計算後のデータをJSONModelにセット
                     const oTaskEntityModel = this.getView().getModel("taskEntity");
                     oTaskEntityModel.setProperty("/taskEntity", oTaskEntity);
-
-
-                    console.log(oTaskEntity);
-                    console.log(oTaskEntityModel);
-
 				}.bind(this),
 				error: function (err){
 					MessageToast.show("データの取得に失敗しました");
@@ -96,6 +120,7 @@ sap.ui.define([
          * 戻るボタンの処理
          */
         onNavBack: function () {
+            console.log("─────戻るボタン押下─────");
             const oHistory = History.getInstance();
             const sPreviousHash = oHistory.getPreviousHash();
 
@@ -110,6 +135,7 @@ sap.ui.define([
          * 作業履歴詳細ページに遷移
          */
         onOpenTaskDetail: function (oEvent) {
+            console.log("─────詳細ボタン押下─────");
             const oContext = oEvent.getSource().getBindingContext("taskEntity");
             if (!oContext) {
                 return;
@@ -117,7 +143,6 @@ sap.ui.define([
         
             const selectedDate = oContext.getProperty("date");
             if (!selectedDate) {
-                console.error("日付が取得できませんでした");
                 return;
             }
 

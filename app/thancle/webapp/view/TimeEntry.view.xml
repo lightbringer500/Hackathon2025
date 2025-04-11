@@ -87,6 +87,9 @@
                     <HBox id="hSub10-4" class="hSub4"><Input id="measureAdjust10" class="measureLabel measureAdjust" value="{viewModel>/tasks/9/adjustValue}" liveChange=".onValidateInput" /></HBox>
                     <customData><core:CustomData key="keepAddTime" value="0" /></customData>
                 </HBox>
+                <HBox id="hBoxAddEntry" width="100%">
+                    <HBox id="hSub-add" class="hSub1"><Button id="measureAddButton" class="taskLabel" text="{i18n>TaskAddButton}" width="100%" press=".onAddTask" /></HBox>
+                </HBox>
 			</VBox>
 
 			<!-- タスク追加ボタン -->

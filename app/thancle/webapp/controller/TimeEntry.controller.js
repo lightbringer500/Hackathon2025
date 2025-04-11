@@ -77,7 +77,6 @@ sap.ui.define([
                 oModel = new JSONModel({ tasks: [] });
                 this.getView().setModel(oModel, "viewModel");
             }
-            console.log("モデル取得:", oModel);
 
             // OData サービスからデータ取得
             $.ajax({
@@ -86,8 +85,6 @@ sap.ui.define([
                 success: function (data) {
                     if (data.value.length > 0) {
                         let taskData = data.value[0];
-
-                        console.log(taskData);
 
                         // タスクデータをセット
                         let tasks = [];
@@ -195,9 +192,6 @@ sap.ui.define([
 		_calculateElapsed: function(startTime, elapsedTime, addTime) {
             const now = new Date();
             let diff;
-
-            console.log("すたーとたいむ : " + startTime);
-            console.log("経過時間？ : " + elapsedTime);
         
             // "-"のみの場合は経過時間を計算しない
             if (elapsedTime === "-") {
@@ -292,9 +286,6 @@ sap.ui.define([
             const hBoxItem = this.byId("hBox" + numberStr);
             // 既存のCustomDataを更新
             var customData = hBoxItem.getCustomData().find(data => data.getKey() === "keepAddTime");
-            console.log(timeItem.getValue());
-            console.log(customData.getValue());
-
 
             // 要素の値を取得（例: "12:01:00"）
             const timeValue = timeItem.getValue(); // 取得する時間は "hh:mm:ss" 形式
@@ -318,13 +309,14 @@ sap.ui.define([
             timeItem.setValue(updatedTime);
             // 今回の追加時間を保管
             customData.setValue(Number(sValue));
-
         },
 
         /**
          * タスクデータ更新
          */
         onEndTask: function () {
+
+            console.log("─────登録ボタン押下─────");
 
             // モデル取得
             const oModel = this.getOwnerComponent().getModel("taskEntity");
@@ -417,7 +409,30 @@ sap.ui.define([
             const pattern = /^-?\d+$/;
             return pattern.test(num.toString());
         },
-    
+
+        
+        onAddTask: function () {
+            const oViewModel = this.getView().getModel("viewModel");
+            const aTasks = oViewModel.getProperty("/tasks");
+        
+            // 表示されていない最初のタスク行を探す
+            for (let i = 0; i < aTasks.length; i++) {
+                if (aTasks[i].visible === false) {
+                    aTasks[i].visible = true;
+                    break;
+                }
+            }
+        
+            // 更新反映
+            oViewModel.setProperty("/tasks", aTasks);
+        
+            // 全てのタスクが visible になったら追加ボタンを非表示にする
+            const bAllVisible = aTasks.every(task => task.visible === true);
+            if (bAllVisible) {
+                this.getView().byId("measureAddButton").setVisible(false);
+            }
+        },
+
 
         
 		// onAddTask: function () {

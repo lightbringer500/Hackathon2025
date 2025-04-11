@@ -19,7 +19,7 @@
                 id="workHistoryItem"
                 type="Navigation"
                 title="{taskEntity>date}"
-                description="{= ${taskEntity>totalTime}}"
+                description="{= ${taskEntity>totalTime}} 　/　 {= ${taskEntity>oneDayCalc}} 　/　 {= ${taskEntity>monthDaysCalc}}"
                 press=".onOpenTaskDetail"
             />
         </List>

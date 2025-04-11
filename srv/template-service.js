@@ -17,6 +17,11 @@ class TemplateService extends cds.ApplicationService {
         const userId = "admin";
         const { oneDay, monthDays, tasks } = req.data;
         
+        console.log("───テンプレート情報登録処理開始───")
+        console.log(oneDay);
+        console.log(monthDays);
+        console.log(tasks);
+
         // タスク一覧(JSON文字列 ▶ 配列)
 		let taskList = [];
 		try {
@@ -30,10 +35,10 @@ class TemplateService extends cds.ApplicationService {
 		const db = cds.transaction(req);
 
 		try {
-			// 1. 既存データを削除
+			// 既存データを削除
 			await db.run(DELETE.from('zynas.thancle.Template').where({ userId }));
 
-			// 2. 新規データを挿入
+			// 新規データを挿入
 			const insertData = {
 				userId,
 				oneDay,
@@ -48,6 +53,7 @@ class TemplateService extends cds.ApplicationService {
 			await db.run(INSERT.into('zynas.thancle.Template').entries(insertData));
 
 			// 登録成功
+            console.log("───テンプレート情報更新成功 : ", userId + " / " + tasks + " ───");
 			return { error: "" };
 
 		} catch (err) {
@@ -91,43 +97,6 @@ class TemplateService extends cds.ApplicationService {
         // return { error: "" };
     }
 
-    /**
-     * 履歴の登録
-     */
-    // async registerHistories(senderId, recipientId, seedRate, message) {
-    //     // 消費タネ数、贈るポイント、ポイントバック
-    //     const { quantity: quantity, sender_amount: backAmount, recipient_amount: amount } = seedRate;
-    //     // タネ履歴を登録し、登録内容を保持
-    //     const seedEntries = [{ employee_ID: senderId, quantity: -quantity }];
-    //     await INSERT.into('zynas.thancle.SeedHistories', seedEntries);
-    //     const seedHistory = seedEntries.find(() => true);
-
-    //     // ポイント履歴を登録し、登録内容を保持
-    //     const pointEntries = [
-    //         // 贈る相手
-    //         {
-    //             employee_ID: recipientId,
-    //             amount: amount,
-    //             message: message,
-    //         },
-    //         // 自身へのバック
-    //         {
-    //             employee_ID: senderId,
-    //             amount: backAmount,
-    //             message: "",
-    //         }
-    //     ];
-    //     await INSERT.into('zynas.thancle.PointHistories', pointEntries);
-
-    //     // タネ履歴とポイント履歴の対応
-    //     const seedPointMappingEntries = pointEntries.map((point) => {
-    //         return {
-    //             pointHistory_ID: point.ID,
-    //             seedHistory_ID: seedHistory.ID,
-    //         }
-    //     });
-    //     await INSERT.into('zynas.thancle.SeedPointMapping', seedPointMappingEntries);
-    // }
 }
 
 module.exports = TemplateService;

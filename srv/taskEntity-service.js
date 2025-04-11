@@ -125,7 +125,7 @@ class TaskEntityService extends cds.ApplicationService {
 					.where({ userId, date })
 			);
 
-			console.log("───タスク更新成功 : ", userId, date + " ───");
+			console.log("───タスク更新成功 : ", userId + " / " + date + " ───");
 			return { success: true };
 		} catch (error) {
 			console.error("DBエラー:", error);
