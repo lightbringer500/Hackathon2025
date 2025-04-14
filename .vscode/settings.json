@@ -27,4 +27,5 @@
     "xsuaa",
     "zynas"
   ],
+  "SAP HANA Database Explorer.UseObjectsDefinitionForSqlGeneration.RetentionTime": 7,
 }

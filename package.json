@@ -15,6 +15,8 @@
     "@cap-js/cds-types": "^0.7.0",
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^8",
+    "electron": "^35.0.3",
+    "electron-rebuild": "^3.2.9",
     "rimraf": "^5.0.5"
   },
   "scripts": {
@@ -22,7 +24,8 @@
     "watch-thancle": "cds watch --open thancle/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy thancle --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && cds compile srv --to xsuaa > xs-security.json && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "rebuild": "electron-rebuild -f -w better-sqlite3 --version 35.0.3"
   },
   "sapux": [
     "app/thancle"
@@ -54,7 +57,7 @@
               "password": "abc"
             },
             "test3@example.com": {
-              "roles": [ ],
+              "roles": [],
               "password": "abc"
             },
             "not-exist-user@example.com": {
